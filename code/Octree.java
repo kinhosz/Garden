@@ -157,7 +157,7 @@ public class Octree{
 		den = (a*p.x + b*p.y + c*p.z);
 
 		if(Math.abs(den) < eps) return -1; // nao intercepta
-		double t = -(a*x + b*y + c*z + d)/den;
+		double t = -d/den;
 
 		double nx,ny,nz;
 		nx = x + p.x*t;
