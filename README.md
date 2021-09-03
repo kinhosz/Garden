@@ -1,4 +1,4 @@
-# Garden
+# Garden ![Visitors](https://visitor-badge.glitch.me/badge?page_id=kinhosz.Garden)
 
 <!---Esses são exemplos. Veja https://shields.io para outras pessoas ou para personalizar este conjunto de escudos. Você pode querer incluir dependências, status do projeto e informações de licença aqui--->
 
@@ -7,6 +7,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/kinhosz/Garden?style=for-the-badge)
 ![Bitbucket open issues](https://img.shields.io/bitbucket/issues/kinhosz/Garden?style=for-the-badge)
 ![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/kinhosz/Garden?style=for-the-badge)
+
 
 > Uma biblioteca para criações de jogos 3D.
 
