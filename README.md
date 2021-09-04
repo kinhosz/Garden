@@ -5,8 +5,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/kinhosz/Garden?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/kinhosz/Garden?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/kinhosz/Garden?style=for-the-badge)
-![Bitbucket open issues](https://img.shields.io/bitbucket/issues/kinhosz/Garden?style=for-the-badge)
-![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/kinhosz/Garden?style=for-the-badge)
+![Github open issues](https://img.shields.io/github/issues/kinhosz/Garden?style=for-the-badge)
 
 
 > Uma biblioteca para criações de jogos 3D.
