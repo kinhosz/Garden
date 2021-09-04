@@ -15,11 +15,11 @@
 
 O projeto ainda está em desenvolvimento e as próximas tarefas a serem implementadas serão:
 
-- [ ] [Campo de visão](link_1)
-- [ ] [Espaço tridimensional](link_2)
-- [ ] [Formas e objetos](link_3)
-- [ ] [Iluminação](link_3)
-- [ ] [Física](link_4)
+- [ ] [Campo de visão](https://github.com/kinhosz/Garden/milestone/1)
+- [ ] [Espaço tridimensional](https://github.com/kinhosz/Garden/milestone/2)
+- [ ] [Formas e objetos](https://github.com/kinhosz/Garden/milestone/3)
+- [ ] [Iluminação](https://github.com/kinhosz/Garden/milestone/4)
+- [ ] [Física](https://github.com/kinhosz/Garden/milestone/5)
 
 ## 💻 Pré-requisitos
 
@@ -37,6 +37,8 @@ Para contribuir com o Garden, siga estas etapas:
 3. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`
 4. Envie para o branch original: `git push origin <nome_do_projeto> / <local>`
 5. Crie a solicitação de pull.
+
+Lembre de consultar todas as issues abertas e como elas estão distribuídas nos milestones.
 
 Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
