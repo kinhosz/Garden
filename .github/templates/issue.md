@@ -10,6 +10,7 @@ Esta issue é do tipo:
 - [ ] Bug encontrado
 - [ ] Nova funcionalidade
 - [ ] Documentação necessária
+- [ ] Teste
 - [ ] Outro
 
 ## 🛠 Descrição
