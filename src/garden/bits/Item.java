@@ -1,8 +1,9 @@
 package bits;
-import bits.Event;
+import event.Event;
 public class Item{
 
     private Event data;
+
     private Item next;
 
     public Item(Event data){

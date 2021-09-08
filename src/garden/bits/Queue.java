@@ -1,7 +1,5 @@
 package bits;
-import bits.Event;
-import bits.Item;
-
+import event.Event;
 public class Queue{
 
     private int size;
