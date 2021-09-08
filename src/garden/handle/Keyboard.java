@@ -16,19 +16,19 @@ public class Keyboard extends KeyAdapter implements KeyboardConst{
 
     @Override
     public void keyPressed(KeyEvent e){
-		KeyboardEv ev = new KeyboardEv(KEY_PRESSED, e);
+        KeyboardEv ev = new KeyboardEv(KEY_PRESSED, e);
         this.buffer.push(ev);
     }
 
     @Override
-	public void keyReleased(KeyEvent e){
-		KeyboardEv ev = new KeyboardEv(KEY_RELEASED, e);
+    public void keyReleased(KeyEvent e){
+        KeyboardEv ev = new KeyboardEv(KEY_RELEASED, e);
         this.buffer.push(ev);
     }
 
     @Override
-	public void keyTyped(KeyEvent e){
-		KeyboardEv ev = new KeyboardEv(KEY_TYPED, e);
+    public void keyTyped(KeyEvent e){
+        KeyboardEv ev = new KeyboardEv(KEY_TYPED, e);
         this.buffer.push(ev);
     }
 }
