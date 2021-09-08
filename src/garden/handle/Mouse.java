@@ -10,6 +10,7 @@ public class Mouse extends MouseAdapter implements MouseConst{
     private Queue buffer;
 
     public Mouse(Queue q){
+        super();
         this.buffer = q;
     }
 

@@ -10,6 +10,7 @@ public class Motion extends MouseMotionAdapter implements MouseConst{
     private Queue buffer;
 
     public Motion(Queue q){
+        super();
         this.buffer = q;
     }
 
