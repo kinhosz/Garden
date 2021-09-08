@@ -1,6 +1,6 @@
 package event;
 import constants.KeyboardConst;
 import constants.MouseConst;
-public class Event implements KeyboardConst, MouseConst{
+public abstract class Event implements KeyboardConst, MouseConst{
     // abstract class
 }

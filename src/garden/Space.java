@@ -18,7 +18,7 @@ public class Space{
     }
 
     public void setPixel(int x, int y, int r, int g, int b){
-        Color temp = new Color(r,b,b);
+        Color temp = new Color(r,g,b);
         image.setRGB(x, y, temp.getRGB());
     }
 
