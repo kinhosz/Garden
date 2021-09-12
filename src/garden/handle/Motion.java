@@ -1,8 +1,9 @@
 package handle;
-import constants.MouseConst;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
 import bits.Queue;
+import constants.MouseConst;
 import event.MouseEv;
 
 public class Motion extends MouseMotionAdapter implements MouseConst{
@@ -16,13 +17,13 @@ public class Motion extends MouseMotionAdapter implements MouseConst{
 
     @Override
     public void mouseDragged(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_DRAGGED, e);
+        MouseEv ev = new MouseEv(Motion.MOUSE_DRAGGED, e);
         this.buffer.push(ev);
     }
 
     @Override
     public void mouseMoved(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_MOVED, e);
+        MouseEv ev = new MouseEv(Motion.MOUSE_MOVED, e);
         this.buffer.push(ev);
     }
 }

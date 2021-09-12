@@ -1,6 +1,16 @@
 package event;
 import constants.KeyboardConst;
 import constants.MouseConst;
-public abstract class Event implements KeyboardConst, MouseConst{
-    // abstract class
+import constants.SourceConst;
+
+public abstract class Event implements SourceConst, KeyboardConst, MouseConst{
+    private int source;
+
+    public int getSource(){
+        return this.source;
+    }
+
+    public void setSource(int source){
+        this.source = source;
+    }
 }

@@ -16,31 +16,31 @@ public class Mouse extends MouseAdapter implements MouseConst{
 
     @Override
     public void mouseClicked(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_CLICKED, e);
+        MouseEv ev = new MouseEv(Mouse.MOUSE_CLICKED, e);
         this.buffer.push(ev);
     }
 
     @Override
     public void mouseEntered(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_ENTERED, e);
+        MouseEv ev = new MouseEv(Mouse.MOUSE_ENTERED, e);
         this.buffer.push(ev);
     }
 
     @Override
     public void mouseExited(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_EXITED, e);
+        MouseEv ev = new MouseEv(Mouse.MOUSE_EXITED, e);
         this.buffer.push(ev);
     }
 
     @Override
     public void mousePressed(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_PRESSED, e);
+        MouseEv ev = new MouseEv(Mouse.MOUSE_PRESSED, e);
         this.buffer.push(ev);
     }
 
     @Override
     public void mouseReleased(MouseEvent e){
-        MouseEv ev = new MouseEv(MOUSE_RELEASED, e);
+        MouseEv ev = new MouseEv(Mouse.MOUSE_RELEASED, e);
         this.buffer.push(ev);
     }
 }
