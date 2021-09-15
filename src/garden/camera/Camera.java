@@ -51,6 +51,10 @@ public class Camera {
         this.direction.setDirection(p.getX(), p.getY(), p.getZ());
     }
 
+    public void setDirection(double alpha, double beta){
+        this.direction.setDirection(alpha, beta);
+    }
+
     public void resize(int width, int height){
         this.width = width;
         this.height = height;
@@ -137,5 +141,33 @@ public class Camera {
 
     public JLabel takePicture(){
         return this.vision.takePicture();
+    }
+
+    public void horizontalRotation(double dAlpha){
+        this.direction.addAlpha(dAlpha);
+    }
+
+    public void verticalRotation(double dBeta){
+        this.direction.addBeta(dBeta);
+    }
+
+    public double getXDirection(){
+        return this.direction.getX();
+    }
+
+    public double getYDirection(){
+        return this.direction.getX();
+    }
+
+    public double getZDirection(){
+        return this.direction.getZ();
+    }
+
+    public double getAlphaDirection(){
+        return this.direction.getAlpha();
+    }
+
+    public double getBetaDirection(){
+        return this.direction.getBeta();
     }
 }
