@@ -41,14 +41,4 @@ public class Point {
     public double getZ(){
         return this.z;
     }
-
-    public void rotation2D(double angle){
-        double rad = (angle*Math.PI)/180.0;
-
-        double x = this.x*Math.cos(rad) - this.y*Math.sin(rad);
-        double y = this.x*Math.sin(rad) + this.y*Math.cos(rad);
-
-        this.x = x;
-        this.y=  y;
-    }
 }
