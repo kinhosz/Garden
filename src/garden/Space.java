@@ -1,3 +1,4 @@
+import java.awt.AWTException;
 import java.awt.Color;
 import javax.swing.JFrame;
 import java.awt.image.BufferedImage;
@@ -10,6 +11,8 @@ import handle.Motion;
 import camera.Camera;
 import event.Event;
 import event.KeyboardEv;
+import event.MouseEv;
+import java.awt.Robot;
 
 public class Space{
 
@@ -35,13 +38,15 @@ public class Space{
         return this.camera.getZLocation();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
         Space space = new Space(300,300);
         Queue buffer = new Queue();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
-        Motion motion = new Motion(buffer);
+        Motion motion = new Motion(buffer, frame);
+        motion.lockCursor();
+        motion.setCursorPosition(150, 150);
 
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
@@ -53,6 +58,9 @@ public class Space{
         frame.getContentPane().add(camera.takePicture());
         frame.pack();
         frame.setVisible(true);
+
+        System.out.println(frame.getLocationOnScreen().getX());
+        System.out.println(frame.getLocationOnScreen().getY());
 
         while(true){
 
@@ -77,10 +85,19 @@ public class Space{
                 else if(e.getKeyChar() == 'a'){
                     camera.moveLeft();
                 }
-                System.out.println("----------------------");
-                System.out.println(space.getXCameraLocation());
-                System.out.println(space.getYCameraLocation());
-                System.out.println(space.getZCameraLocation());
+            }
+            else if(ev instanceof MouseEv){
+                MouseEv e = (MouseEv) ev;
+                System.out.println(0.5 * (150 - e.getX()));
+                camera.horizontalRotation(0.5 * (150 - e.getX()));
+                camera.verticalRotation(0.5 * (150 - e.getY()));
+
+                System.out.println("----------------");
+                System.out.println(camera.getXDirection());
+                System.out.println(camera.getYDirection());
+                System.out.println(camera.getZDirection());
+                System.out.println("alpha = " + camera.getAlphaDirection());
+                System.out.println("beta = " + camera.getBetaDirection());
             }
         }
     }
