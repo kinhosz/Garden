@@ -49,7 +49,9 @@ public class Direction {
         }
 
         this.beta = Math.toDegrees(Math.asin(this.z));
+        this.beta = Math.max(this.MIN_BETA, Math.min(this.MAX_BETA, this.beta));
         this.alpha = Math.toDegrees(Math.acos(this.x/Math.cos(Math.toRadians(this.beta))));
+        this.normalizeAngles();
     }
 
     public double getX(){

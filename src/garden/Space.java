@@ -1,9 +1,5 @@
 import java.awt.AWTException;
-import java.awt.Color;
 import javax.swing.JFrame;
-import java.awt.image.BufferedImage;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
 import handle.Keyboard;
 import handle.Mouse;
 import bits.Queue;
@@ -12,7 +8,6 @@ import camera.Camera;
 import event.Event;
 import event.KeyboardEv;
 import event.MouseEv;
-import java.awt.Robot;
 
 public class Space{
 
@@ -24,18 +19,6 @@ public class Space{
 
     public Camera getCamera(){
         return this.camera;
-    }
-
-    public double getXCameraLocation(){
-        return this.camera.getXLocation();
-    }
-
-    public double getYCameraLocation(){
-        return this.camera.getYLocation();
-    }
-
-    public double getZCameraLocation(){
-        return this.camera.getZLocation();
     }
 
     public static void main(String[] args) throws AWTException{
