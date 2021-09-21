@@ -104,7 +104,7 @@ public class Camera {
         double x = this.location.getX();
         double y = this.location.getY();
 
-        dir2d.rotation2D(90.0);
+        dir2d.rotationZ(90.0);
 
         x = x + (this.sensitivity * dir2d.getX());
         y = y + (this.sensitivity * dir2d.getY());
@@ -118,7 +118,7 @@ public class Camera {
         double x = this.location.getX();
         double y = this.location.getY();
 
-        dir2d.rotation2D(270.0);
+        dir2d.rotationZ(270.0);
 
         x = x + (this.sensitivity * dir2d.getX());
         y = y + (this.sensitivity * dir2d.getY());
