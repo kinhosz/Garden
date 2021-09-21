@@ -2,6 +2,7 @@ package camera;
 import javax.swing.JLabel;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
+import java.awt.Color;
 
 import geometry.Point;
 import geometry.Direction;
@@ -24,12 +25,20 @@ public class Vision {
         this.matrix = new int[this.height][this.width][3];
     }
 
-    synchronized public JLabel takePicture(){
+    private JLabel createImage(){
+
+        for(int i=0;i<this.height;i++){
+            for(int j=0;j<this.width;j++){
+                Color color = new Color(this.matrix[i][j][0], this.matrix[i][j][1], this.matrix[i][j][2]);
+                this.image.setRGB(j, i, color.getRGB());
+            }
+        }
+
         JLabel context = new JLabel(new ImageIcon(this.image));
         return context;
     }
 
-    public void takePicture(Point p, Direction d) throws InterruptedException{
+    public JLabel takePicture(Point p, Direction d) throws InterruptedException{
 
         double verticalInitial = this.verticalAngleRange/2;
         double horizontalInitial = -this.horizontalAngleRange/2;
@@ -47,7 +56,7 @@ public class Vision {
                 Point point = new Point(p.getX(), p.getY(), p.getZ());
                 Direction direction = new Direction(0.0, 1.0, 0.0);
 
-                direction.eulerRotation(direction.getAlpha() - 90.0, direction.getBeta() + v0, h0);
+                direction.eulerRotation(d.getAlpha() - 90.0, d.getBeta() + v0, h0);
 
                 RayTracing rt = new RayTracing(point, direction, this.matrix, i,j);
                 rt.run();
@@ -66,5 +75,7 @@ public class Vision {
 
             rt.join();
         }
+
+        return this.createImage();
     }
 }

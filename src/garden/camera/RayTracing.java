@@ -13,7 +13,7 @@ public class RayTracing extends Thread{
     private int x;
     private int y;
 
-    public RayTracing(Point p, Direction d, int[][][] buffer, int x,int y){
+    public RayTracing(Point p, Direction d, int[][][] buffer, int x, int y){
         super();
         this.position = p;
         this.direction = d;
@@ -24,9 +24,26 @@ public class RayTracing extends Thread{
 
     @Override
     public void run(){
-        System.out.println("oi, sou o RT " + this.x + " + " + this.y);
-        this.buffer[this.x][this.y][0] = 255;
-        this.buffer[this.x][this.y][1] = 0;
-        this.buffer[this.x][this.y][2] = 0;
+
+        if(this.direction.getX() >= 0.0 && this.direction.getY() >= 0.0){
+            this.buffer[this.x][this.y][0] = 0;
+            this.buffer[this.x][this.y][1] = 0;
+            this.buffer[this.x][this.y][2] = 0;
+        }
+        else if(this.direction.getX() >= 0.0){
+            this.buffer[this.x][this.y][0] = 255;
+            this.buffer[this.x][this.y][1] = 255;
+            this.buffer[this.x][this.y][2] = 255;
+        }
+        else if(this.direction.getX() < 0.0 && this.direction.getY() < 0.0){
+            this.buffer[this.x][this.y][0] = 0;
+            this.buffer[this.x][this.y][1] = 0;
+            this.buffer[this.x][this.y][2] = 255;
+        }
+        else{
+            this.buffer[this.x][this.y][0] = 255;
+            this.buffer[this.x][this.y][1] = 0;
+            this.buffer[this.x][this.y][2] = 0;
+        }
     }
 }

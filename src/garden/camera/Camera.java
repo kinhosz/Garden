@@ -139,16 +139,17 @@ public class Camera {
         this.location.setZ(z);
     }
 
-    public JLabel takePicture2(){
-        return this.vision.takePicture();
-    }
+    public JLabel takePicture(){
 
-    public void takePicture(){
+        JLabel label = null;
+
         try {
-            this.vision.takePicture(this.location, this.direction);
+            label = this.vision.takePicture(this.location, this.direction);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        return label;
     }
 
     public void horizontalRotation(double dAlpha){

@@ -92,10 +92,10 @@ public class Direction {
 
     public void eulerRotation(double alpha, double beta, double gama){
 
-        // the euler rotation: xzx
-        this.rotationX(alpha);
-        this.rotationZ(beta);
-        this.rotationX(gama);
+        // the euler rotation: zxz
+        this.rotationZ(alpha);
+        this.rotationX(beta);
+        this.rotationZ(gama);
     }
 
     private void normalizeAngles(){

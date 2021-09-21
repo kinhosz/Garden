@@ -38,17 +38,19 @@ public class Space{
         Camera camera = space.getCamera();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(camera.takePicture2());
+        frame.getContentPane().add(camera.takePicture());
         frame.pack();
         frame.setVisible(true);
 
         System.out.println(frame.getLocationOnScreen().getX());
         System.out.println(frame.getLocationOnScreen().getY());
 
+        int count = 100;
+
         while(true){
 
             if(buffer.size() == 0) continue;
-            Object ev = buffer.front();
+            Event ev = (Event)buffer.front();
             buffer.pop();
 
             if(ev instanceof KeyboardEv){
@@ -58,7 +60,6 @@ public class Space{
                 }
                 else if(e.getKeyChar() == 'w'){
                     camera.moveFront();
-                    camera.takePicture();
                 }
                 else if(e.getKeyChar() == 'd'){
                     camera.moveRight();
@@ -72,16 +73,16 @@ public class Space{
             }
             else if(ev instanceof MouseEv){
                 MouseEv e = (MouseEv) ev;
-                System.out.println(0.5 * (150 - e.getX()));
                 camera.horizontalRotation(0.5 * (150 - e.getX()));
                 camera.verticalRotation(0.5 * (150 - e.getY()));
+                count -= 1;
 
-                System.out.println("----------------");
-                System.out.println(camera.getXDirection());
-                System.out.println(camera.getYDirection());
-                System.out.println(camera.getZDirection());
-                System.out.println("alpha = " + camera.getAlphaDirection());
-                System.out.println("beta = " + camera.getBetaDirection());
+                if(count == 0){
+                    frame.getContentPane().add(camera.takePicture());
+                    frame.pack();
+                    frame.setVisible(true);
+                    count = 5;
+                }
             }
         }
     }
