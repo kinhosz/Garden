@@ -38,7 +38,7 @@ public class Space{
         Camera camera = space.getCamera();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(camera.takePicture());
+        frame.getContentPane().add(camera.takePicture2());
         frame.pack();
         frame.setVisible(true);
 
@@ -48,7 +48,7 @@ public class Space{
         while(true){
 
             if(buffer.size() == 0) continue;
-            Event ev = buffer.front();
+            Object ev = buffer.front();
             buffer.pop();
 
             if(ev instanceof KeyboardEv){
@@ -58,6 +58,7 @@ public class Space{
                 }
                 else if(e.getKeyChar() == 'w'){
                     camera.moveFront();
+                    camera.takePicture();
                 }
                 else if(e.getKeyChar() == 'd'){
                     camera.moveRight();
