@@ -1,12 +1,12 @@
 package bits;
-import event.Event;
+
 public class Item{
 
-    private Event data;
+    private Object data;
 
     private Item next;
 
-    public Item(Event data){
+    public Item(Object data){
         this.data = data;
         this.next = null;
     }
@@ -19,7 +19,7 @@ public class Item{
         this.next = next;
     }
 
-    public Event getData(){
+    public Object getData(){
         return this.data;
     }
 }

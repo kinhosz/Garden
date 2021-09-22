@@ -66,7 +66,7 @@ public class Direction {
         return this.z;
     }
 
-    public void rotation2D(double angle){
+    public void rotationZ(double angle){
         double rad = Math.toRadians(angle);
 
         double x = this.x*Math.cos(rad) - this.y*Math.sin(rad);
@@ -76,6 +76,26 @@ public class Direction {
         this.y = y;
 
         this.normalize();
+    }
+
+    public void rotationX(double angle){
+        double rad = Math.toRadians(angle);
+
+        double y = this.y*Math.cos(rad) - this.z*Math.sin(rad);
+        double z = this.y*Math.sin(rad) + this.z*Math.cos(rad);
+
+        this.y = y;
+        this.z = z;
+
+        this.normalize();
+    }
+
+    public void eulerRotation(double alpha, double beta, double gama){
+
+        // the euler rotation: zxz
+        this.rotationZ(alpha);
+        this.rotationX(beta);
+        this.rotationZ(gama);
     }
 
     private void normalizeAngles(){

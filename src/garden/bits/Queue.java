@@ -1,5 +1,4 @@
 package bits;
-import event.Event;
 public class Queue{
 
     private int size;
@@ -20,14 +19,14 @@ public class Queue{
         }
     }
 
-    synchronized public Event front(){
+    synchronized public Object front(){
 
         if(this.size == 0) return null;
 
         return this.head.getData();
     }
 
-    synchronized public void push(Event e){
+    synchronized public void push(Object e){
         
         this.size++;
         Item it = new Item(e);
