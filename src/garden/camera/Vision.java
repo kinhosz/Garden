@@ -7,8 +7,6 @@ import java.awt.Color;
 import geometry.Point;
 import geometry.Direction;
 
-import bits.Queue;
-
 public class Vision {
 
     private int width;
@@ -16,64 +14,72 @@ public class Vision {
     private BufferedImage image;
     private double verticalAngleRange = 120.0;
     private double horizontalAngleRange = 120.0;
-    private int[][][] matrix;
+    private boolean locked;
 
     public Vision(int width, int height){
         this.width = width;
         this.height = height;
         this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
-        this.matrix = new int[this.height][this.width][3];
+        this.createBaseImage();
+        this.locked = false;
     }
 
-    private JLabel createImage(){
+    private void createBaseImage(){
 
         for(int i=0;i<this.height;i++){
             for(int j=0;j<this.width;j++){
-                Color color = new Color(this.matrix[i][j][0], this.matrix[i][j][1], this.matrix[i][j][2]);
-                this.image.setRGB(j, i, color.getRGB());
+                Color c = new Color(0,0,0);
+                this.image.setRGB(j, i, c.getRGB());
             }
         }
+    }
+
+    private synchronized boolean getStatus(){
+        return this.locked;
+    }
+
+    private synchronized void lock(){
+        this.locked = true;
+    }
+
+    private synchronized void unlock(){
+        this.locked = false;
+    }
+
+    public int getWidth(){
+        return this.width;
+    }
+
+    public int getHeight(){
+        return this.width;
+    }
+
+    public double getVerticalAngleRange(){
+        return this.verticalAngleRange;
+    }
+
+    public double getHorizontalAngleRange(){
+        return this.horizontalAngleRange;
+    }
+
+    private synchronized JLabel createImage(){
 
         JLabel context = new JLabel(new ImageIcon(this.image));
         return context;
     }
 
-    public JLabel takePicture(Point p, Direction d) throws InterruptedException{
+    public synchronized void changePicture(BufferedImage bi){
+        System.out.println("alo");
+        this.image = bi;
+        this.unlock();
+    }
 
-        double verticalInitial = this.verticalAngleRange/2;
-        double horizontalInitial = -this.horizontalAngleRange/2;
+    public JLabel takePicture(Point p, Direction d){
 
-        double dVert = this.verticalAngleRange/this.height;
-        double dHoriz = this.horizontalAngleRange/this.width;
-
-        double v0 = verticalInitial;
-
-        Queue consumers = new Queue();
-
-        for(int i=0;i<this.height;i++){
-            double h0 = horizontalInitial;
-            for(int j=0;j<this.width;j++){
-                Point point = new Point(p.getX(), p.getY(), p.getZ());
-                Direction direction = new Direction(0.0, 1.0, 0.0);
-
-                direction.eulerRotation(d.getAlpha() - 90.0, d.getBeta() + v0, h0);
-
-                RayTracing rt = new RayTracing(point, direction, this.matrix, i,j);
-                rt.run();
-
-                consumers.push(rt);
-
-                h0 = h0 + dHoriz;
-            }
-
-            v0 = v0 - dVert;
-        }
-
-        while(!consumers.empty()){
-            RayTracing rt = (RayTracing)consumers.front();
-            consumers.pop();
-
-            rt.join();
+        if(!this.getStatus()){
+            this.lock();
+            Picture picture = new Picture(p, d, this);
+            picture.start();
         }
 
         return this.createImage();

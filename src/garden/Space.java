@@ -11,6 +11,8 @@ import event.MouseEv;
 import event.TimerEv;
 import handle.Timer;
 
+import event.Event;
+
 public class Space{
 
     private Camera camera;
@@ -30,7 +32,7 @@ public class Space{
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 1000/10);
+        Timer timer = new Timer(buffer, "display", 100);
         
         motion.lockCursor();
         motion.setCursorPosition(300, 240);
@@ -60,6 +62,9 @@ public class Space{
             buffer.pop();
 
             if(ev instanceof KeyboardEv){
+
+                //System.out.println("keyboard = " + ev.elapsed());
+
                 KeyboardEv e = (KeyboardEv) ev;
                 if(e.getKeyChar() == 'f' || e.getKeyChar() == 'F'){
                     break;
@@ -78,14 +83,20 @@ public class Space{
                 }
             }
             else if(ev instanceof MouseEv){
+
                 MouseEv e = (MouseEv) ev;
                 camera.horizontalRotation(0.5 * (150 - e.getX()));
                 camera.verticalRotation(0.5 * (150 - e.getY()));
             }
             else if(ev instanceof TimerEv){
+
+                Event e = new Event();
+
                 frame.getContentPane().add(camera.takePicture());
                 frame.pack();
                 frame.setVisible(true);
+
+                System.out.println("elapsed = " + e.elapsed());
             }
         }
 

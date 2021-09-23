@@ -142,12 +142,8 @@ public class Camera {
     public JLabel takePicture(){
 
         JLabel label = null;
-
-        try {
-            label = this.vision.takePicture(this.location, this.direction);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        
+        label = this.vision.takePicture(this.location, this.direction);
 
         return label;
     }
