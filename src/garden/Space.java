@@ -8,6 +8,8 @@ import camera.Camera;
 import event.Event;
 import event.KeyboardEv;
 import event.MouseEv;
+import event.TimerEv;
+import handle.Timer;
 
 public class Space{
 
@@ -23,13 +25,15 @@ public class Space{
 
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
-        Space space = new Space(300,300);
+        Space space = new Space(600,480);
         Queue buffer = new Queue();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
+        Timer timer = new Timer(buffer, "display", 1000/10);
+        
         motion.lockCursor();
-        motion.setCursorPosition(150, 150);
+        motion.setCursorPosition(300, 240);
 
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
@@ -45,12 +49,14 @@ public class Space{
         System.out.println(frame.getLocationOnScreen().getX());
         System.out.println(frame.getLocationOnScreen().getY());
 
-        int count = 100;
+        timer.start();
 
         while(true){
 
+            Event ev;
+
             if(buffer.size() == 0) continue;
-            Event ev = (Event)buffer.front();
+            ev = (Event)buffer.front();
             buffer.pop();
 
             if(ev instanceof KeyboardEv){
@@ -75,15 +81,14 @@ public class Space{
                 MouseEv e = (MouseEv) ev;
                 camera.horizontalRotation(0.5 * (150 - e.getX()));
                 camera.verticalRotation(0.5 * (150 - e.getY()));
-                count -= 1;
-
-                if(count == 0){
-                    frame.getContentPane().add(camera.takePicture());
-                    frame.pack();
-                    frame.setVisible(true);
-                    count = 5;
-                }
+            }
+            else if(ev instanceof TimerEv){
+                frame.getContentPane().add(camera.takePicture());
+                frame.pack();
+                frame.setVisible(true);
             }
         }
+
+        timer.kill();
     }
 }
