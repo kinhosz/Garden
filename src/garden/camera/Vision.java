@@ -68,9 +68,15 @@ public class Vision {
         return context;
     }
 
-    public synchronized void changePicture(BufferedImage bi){
-        System.out.println("alo");
-        this.image = bi;
+    public synchronized void changePicture(int[][][] matrix){
+        
+        for(int i=0;i<this.height;i++){
+            for(int j=0;j<this.width;j++){
+                Color c = new Color(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]);
+                this.image.setRGB(j, i, c.getRGB());
+            }
+        }
+
         this.unlock();
     }
 

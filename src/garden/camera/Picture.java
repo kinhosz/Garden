@@ -29,7 +29,6 @@ public class Picture extends Thread{
         double horizontalAngleRange = this.vision.getHorizontalAngleRange();
         int height = this.vision.getHeight();
         int width = this.vision.getWidth();
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         int matrix[][][] = new int[height][width][3];
 
@@ -74,14 +73,7 @@ public class Picture extends Thread{
             }
         }
 
-        for(int i=0;i<height;i++){
-            for(int j=0;j<width;j++){
-                Color color = new Color(matrix[i][j][0], matrix[i][j][1], matrix[i][j][2]);
-                image.setRGB(j, i, color.getRGB());
-            }
-        }
-
-        vision.changePicture(image);
+        vision.changePicture(matrix);
 
         System.out.println("terminei");
     }
