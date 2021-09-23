@@ -6,6 +6,7 @@ public class TimerEv extends Event{
     private int type;
 
     public TimerEv(int type, String name){
+        super();
         this.type = type;
         this.name = name;
     }
