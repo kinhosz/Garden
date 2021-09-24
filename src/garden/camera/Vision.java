@@ -8,6 +8,7 @@ import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
+import bits.Queue;
 
 public class Vision {
 
@@ -16,7 +17,7 @@ public class Vision {
     private BufferedImage image;
     private double verticalAngleRange = 120.0;
     private double horizontalAngleRange = 120.0;
-    private Pool myPool;
+    private boolean locked;
 
     public Vision(int width, int height){
         this.width = width;
@@ -24,7 +25,7 @@ public class Vision {
         this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
         this.image.setAccelerationPriority(0); // idk
         this.createBaseImage();
-        this.myPool = null;
+        this.locked = false;
     }
 
     private void createBaseImage(){
@@ -39,19 +40,7 @@ public class Vision {
 
     public synchronized boolean locked(){
 
-        boolean locked;
-
-        if(this.myPool == null){
-            locked = false;
-        }
-        else if(this.myPool.closed()){
-            locked = false;
-        }
-        else{
-            locked = true;
-        }
-
-        return locked;
+        return this.locked;
     }
 
     public int getWidth(){
@@ -78,14 +67,29 @@ public class Vision {
 
     public synchronized JLabel takePicture(Point p, Direction d) throws Exception{
 
-        Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
-        Direction myDirection = new Direction(d.getX(), d.getY(), d.getZ());
-
         if(this.locked()){
             throw new Exception("The buffered Image is locked");
         }
 
         JLabel label = this.createImage();
+
+        this.splitImage(1, p, d);
+
+        return label;
+    }
+
+    private void splitImage(int threads, Point p, Direction d) throws Exception{
+
+        if(threads > 100){
+            throw new Exception("How many threads!");
+        }
+
+        this.locked = true;
+
+        int block = (int)Math.sqrt(threads);
+
+        Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
+        Direction myDirection = new Direction(d.getX(), d.getY(), d.getZ());
 
         double v0 = -this.verticalAngleRange/2;
         double vf = this.verticalAngleRange/2;
@@ -94,14 +98,50 @@ public class Vision {
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 
-        Pool pool = new Pool(pixels, myPoint, myDirection, 5*5, this.height, this.width);
-        this.myPool = pool;
+        int dx = (int)(this.height + block - 1)/block;
+        int dy = (int)(this.width + block - 1)/block;
 
-        pool.setAngleRange(v0, vf, h0, hf);
-        pool.setShape(0, this.height-1, 0, this.width-1);
-        pool.start();
+        double dv = (vf - v0)/this.height;
+        double dh = (hf - h0)/this.width;
 
-        return label;
+        Queue party = new Queue();
+
+        double vf_copy = vf;
+
+        for(int x=0;x<this.height;x+=dx){
+            double h0_copy = h0;
+            int xf = Math.min(x + dx, this.height) - 1;
+            if(xf < x) continue;
+            
+            for(int y=0;y<this.width;y+=dy){
+
+                int yf = Math.min(y + dy, this.width) - 1;
+
+                if(yf < y) continue;
+
+                double hf_copy = h0_copy + dh*(yf - y);
+                double v0_copy = vf_copy - dv*(xf - x);
+
+                Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
+                pool.setAngleRange(v0_copy, vf_copy, h0_copy, hf_copy);
+                pool.setShape(x, xf, y, yf);
+                pool.start();
+
+                party.push(pool);
+
+                h0_copy = hf_copy + dh*(yf - y);
+            }
+            vf_copy = vf_copy - dv*(xf - x);
+        }
+
+        while(!party.empty()){
+            Pool pool = (Pool)party.front();
+            party.pop();
+
+            pool.join();
+        }
+
+        this.locked = false;
     }
 
     public BufferedImage getImage(){
