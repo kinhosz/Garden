@@ -27,7 +27,7 @@ public class Space{
 
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
-        Space space = new Space(600,480);
+        Space space = new Space(300,300);
         Queue buffer = new Queue();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
@@ -35,7 +35,7 @@ public class Space{
         Timer timer = new Timer(buffer, "display", 100);
         
         motion.lockCursor();
-        motion.setCursorPosition(300, 240);
+        motion.setCursorPosition(150, 150);
 
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);

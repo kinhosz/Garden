@@ -1,12 +1,11 @@
 package camera;
 
-import java.lang.Thread;
 import java.awt.Color;
 
 import geometry.Direction;
 import geometry.Point;
 
-public class RayTracing extends Thread{
+public class RayTracing{
     
     private Point position;
     private Direction direction;
@@ -17,7 +16,6 @@ public class RayTracing extends Thread{
     private int width;
 
     public RayTracing(Point p, Direction d, int[] buffer, int x0, int xf, int y0, int yf, int height, int width){
-        super();
         this.position = p;
         this.direction = d;
         this.buffer = buffer;
@@ -28,9 +26,8 @@ public class RayTracing extends Thread{
         this.height = height;
         this.width = width;
     }
-
-    @Override
-    public void run(){
+    
+    public void start(){
 
         Color c;
 
@@ -49,7 +46,6 @@ public class RayTracing extends Thread{
         
         for(int i=this.x0; i<=this.xf;i++){
             for(int j=this.y0; j<=this.yf;j++){
-                //this.buffer.setRGB(j, i, c.getRGB());
                 this.buffer[i*this.width + j] = (int)c.getRGB();
             }
         }

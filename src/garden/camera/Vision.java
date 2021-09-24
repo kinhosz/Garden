@@ -94,7 +94,7 @@ public class Vision {
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 
-        Pool pool = new Pool(pixels, myPoint, myDirection, 256, this.height, this.width);
+        Pool pool = new Pool(pixels, myPoint, myDirection, 5*5, this.height, this.width);
         this.myPool = pool;
 
         pool.setAngleRange(v0, vf, h0, hf);

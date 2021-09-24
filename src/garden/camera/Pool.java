@@ -63,12 +63,6 @@ public class Pool extends Thread{
 
             RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf, this.height, this.width);
             rt.start();
-
-            try {
-                rt.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         else if(this.x0 <= this.xf && this.y0 <= this.yf && area <= this.blockSize){
 
@@ -77,12 +71,6 @@ public class Pool extends Thread{
 
             RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf, this.height, this.width);
             rt.start();
-
-            try {
-                rt.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         else if(this.x0 <= this.xf && this.y0 <= this.yf){
 
