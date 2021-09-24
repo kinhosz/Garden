@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
@@ -21,6 +22,7 @@ public class Vision {
         this.width = width;
         this.height = height;
         this.image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
+        this.image.setAccelerationPriority(0); // idk
         this.createBaseImage();
         this.myPool = null;
     }
@@ -90,7 +92,9 @@ public class Vision {
         double h0 = -this.horizontalAngleRange/2;
         double hf = this.horizontalAngleRange/2;
 
-        Pool pool = new Pool(this.getImage(), myPoint, myDirection, 1024);
+        int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
+
+        Pool pool = new Pool(pixels, myPoint, myDirection, 256, this.height, this.width);
         this.myPool = pool;
 
         pool.setAngleRange(v0, vf, h0, hf);

@@ -1,9 +1,7 @@
 package camera;
 
 import java.lang.Thread;
-import java.awt.image.BufferedImage;
 
-import bits.Queue;
 import geometry.Point;
 import geometry.Direction;
 
@@ -21,14 +19,14 @@ public class Pool extends Thread{
     private int yf;
     private int height;
     private int width;
-    private BufferedImage image;
+    private int[] image;
     private boolean close;
     private long blockSize;
 
-    public Pool(BufferedImage bi, Point p, Direction d, long block){
+    public Pool(int[] bi, Point p, Direction d, long block, int height, int width){
         super();
-        this.height = bi.getHeight();
-        this.width = bi.getWidth();
+        this.height = height;
+        this.width = width;
         this.image = bi;
 
         this.point = p;
@@ -63,7 +61,7 @@ public class Pool extends Thread{
             Direction d = new Direction(0.0, 1.0, 0.0);
             d.eulerRotation(this.direction.getAlpha(), this.direction.getBeta() + this.v0, this.h0);
 
-            RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf);
+            RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf, this.height, this.width);
             rt.start();
 
             try {
@@ -77,7 +75,7 @@ public class Pool extends Thread{
             Direction d = new Direction(0.0, 1.0, 0.0);
             d.eulerRotation(this.direction.getAlpha(), this.direction.getBeta() + this.v0, this.h0);
 
-            RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf);
+            RayTracing rt = new RayTracing(this.point, d, this.image, this.x0, this.xf, this.y0, this.yf, this.height, this.width);
             rt.start();
 
             try {
@@ -97,25 +95,25 @@ public class Pool extends Thread{
             int ymid = (int)(this.yf + this.y0)/2;
 
             // first
-            p1 = new Pool(this.image, this.point, this.direction, this.blockSize);
+            p1 = new Pool(this.image, this.point, this.direction, this.blockSize, this.height, this.width);
             p1.setAngleRange(this.v0, vmid, this.h0, hmid);
             p1.setShape(this.x0, xmid, this.y0, ymid);
             p1.start();
 
             // second
-            p2 = new Pool(this.image, this.point, this.direction, this.blockSize);
+            p2 = new Pool(this.image, this.point, this.direction, this.blockSize, this.height, this.width);
             p2.setAngleRange(this.v0, vmid, hmid, this.hf);
             p2.setShape(this.x0, xmid, ymid+1, this.yf);
             p2.start();
 
             // third
-            p3 = new Pool(this.image, this.point, this.direction, this.blockSize);
+            p3 = new Pool(this.image, this.point, this.direction, this.blockSize, this.height, this.width);
             p3.setAngleRange(vmid, this.vf, this.h0, hmid);
             p3.setShape(xmid+1, this.xf, this.y0, ymid);
             p3.start();
 
             // fourth
-            p4 = new Pool(this.image, this.point, this.direction, this.blockSize);
+            p4 = new Pool(this.image, this.point, this.direction, this.blockSize, this.height, this.width);
             p4.setAngleRange(vmid, this.vf, hmid, this.hf);
             p4.setShape(xmid+1, this.xf, ymid+1, this.yf);
             p4.start();
