@@ -12,16 +12,18 @@ public class RayTracing extends Thread{
     private Point position;
     private Direction direction;
     private BufferedImage buffer;
-    private int x;
-    private int y;
+    private int x0, xf;
+    private int y0, yf;
 
-    public RayTracing(Point p, Direction d, BufferedImage buffer, int x, int y){
+    public RayTracing(Point p, Direction d, BufferedImage buffer, int x0, int xf, int y0, int yf){
         super();
         this.position = p;
         this.direction = d;
         this.buffer = buffer;
-        this.x = x;
-        this.y = y;
+        this.x0 = x0;
+        this.y0 = y0;
+        this.xf = xf;
+        this.yf = yf;
     }
 
     @Override
@@ -42,6 +44,10 @@ public class RayTracing extends Thread{
             c = new Color(255,0,0);
         }
         
-        this.buffer.setRGB(this.y, this.x, c.getRGB());
+        for(int i=this.x0; i<=this.xf;i++){
+            for(int j=this.y0; j<=this.yf;j++){
+                this.buffer.setRGB(j, i, c.getRGB());
+            }
+        }
     }
 }

@@ -82,7 +82,7 @@ public class Vision {
         if(this.locked()){
             throw new Exception("The buffered Image is locked");
         }
-        
+
         JLabel label = this.createImage();
 
         double v0 = -this.verticalAngleRange/2;
@@ -90,7 +90,7 @@ public class Vision {
         double h0 = -this.horizontalAngleRange/2;
         double hf = this.horizontalAngleRange/2;
 
-        Pool pool = new Pool(this.getImage(), myPoint, myDirection);
+        Pool pool = new Pool(this.getImage(), myPoint, myDirection, 1024);
         this.myPool = pool;
 
         pool.setAngleRange(v0, vf, h0, hf);
