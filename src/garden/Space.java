@@ -53,6 +53,8 @@ public class Space{
 
         timer.start();
 
+        Event event = new Event();
+
         while(true){
 
             Event ev;
@@ -90,13 +92,14 @@ public class Space{
             }
             else if(ev instanceof TimerEv){
 
-                Event e = new Event();
+                if(camera.updated()){
+                    frame.getContentPane().add(camera.takePicture());
+                    frame.pack();
+                    frame.setVisible(true);
 
-                frame.getContentPane().add(camera.takePicture());
-                frame.pack();
-                frame.setVisible(true);
-
-                System.out.println("elapsed = " + e.elapsed());
+                    System.out.println("flip = " + event.elapsed());
+                    event = new Event();
+                }
             }
         }
 

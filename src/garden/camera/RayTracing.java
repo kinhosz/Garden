@@ -1,6 +1,8 @@
 package camera;
 
+import java.awt.image.BufferedImage;
 import java.lang.Thread;
+import java.awt.Color;
 
 import geometry.Direction;
 import geometry.Point;
@@ -9,11 +11,11 @@ public class RayTracing extends Thread{
     
     private Point position;
     private Direction direction;
-    private int[][][] buffer;
+    private BufferedImage buffer;
     private int x;
     private int y;
 
-    public RayTracing(Point p, Direction d, int[][][] buffer, int x, int y){
+    public RayTracing(Point p, Direction d, BufferedImage buffer, int x, int y){
         super();
         this.position = p;
         this.direction = d;
@@ -25,25 +27,21 @@ public class RayTracing extends Thread{
     @Override
     public void run(){
 
+        Color c;
+
         if(this.direction.getX() >= 0.0 && this.direction.getY() >= 0.0){
-            this.buffer[this.x][this.y][0] = 0;
-            this.buffer[this.x][this.y][1] = 0;
-            this.buffer[this.x][this.y][2] = 0;
+            c = new Color(0,0,0);
         }
         else if(this.direction.getX() >= 0.0){
-            this.buffer[this.x][this.y][0] = 255;
-            this.buffer[this.x][this.y][1] = 255;
-            this.buffer[this.x][this.y][2] = 255;
+            c = new Color(255,255,255);
         }
         else if(this.direction.getX() < 0.0 && this.direction.getY() < 0.0){
-            this.buffer[this.x][this.y][0] = 0;
-            this.buffer[this.x][this.y][1] = 0;
-            this.buffer[this.x][this.y][2] = 255;
+            c = new Color(0, 0, 255);
         }
         else{
-            this.buffer[this.x][this.y][0] = 255;
-            this.buffer[this.x][this.y][1] = 0;
-            this.buffer[this.x][this.y][2] = 0;
+            c = new Color(255,0,0);
         }
+        
+        this.buffer.setRGB(this.y, this.x, c.getRGB());
     }
 }
