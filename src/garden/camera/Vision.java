@@ -112,7 +112,7 @@ public class Vision {
             double h0_copy = h0;
             int xf = Math.min(x + dx, this.height) - 1;
             if(xf < x) continue;
-            
+
             for(int y=0;y<this.width;y+=dy){
 
                 int yf = Math.min(y + dy, this.width) - 1;
