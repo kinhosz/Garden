@@ -165,7 +165,7 @@ public class Camera {
     }
 
     public double getYDirection(){
-        return this.direction.getX();
+        return this.direction.getY();
     }
 
     public double getZDirection(){
