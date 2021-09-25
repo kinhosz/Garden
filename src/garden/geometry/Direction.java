@@ -10,6 +10,7 @@ public class Direction {
     private double beta;
     private final double MAX_BETA = 44;
     private final double MIN_BETA = -44;
+    private final double eps = -1e9;
 
     public Direction(){
         this.x = 1.0;
@@ -27,7 +28,11 @@ public class Direction {
         this.normalize();
     }
 
-    public void setDirection(double x, double y, double z){
+    public Direction(double alpha, double beta){
+        this.setDirection(alpha, beta);
+    }
+
+    public synchronized void setDirection(double x, double y, double z){
         this.x = x;
         this.y = y;
         this.z = z;
@@ -35,9 +40,9 @@ public class Direction {
         this.normalize();
     }
 
-    private void normalize(){
+    private synchronized void normalize(){
         double norma = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-        if(norma == 0.0){
+        if(norma <= eps){
             this.x = 1.0;
             this.y = 0.0;
             this.z = 0.0;
@@ -50,23 +55,28 @@ public class Direction {
 
         this.beta = Math.toDegrees(Math.asin(this.z));
         this.beta = Math.max(this.MIN_BETA, Math.min(this.MAX_BETA, this.beta));
-        this.alpha = Math.toDegrees(Math.acos(this.x/Math.cos(Math.toRadians(this.beta))));
+        
+        double aux = this.x/Math.cos(Math.toRadians(this.beta));
+        aux = Math.min(aux, 1.0);
+        
+        this.alpha = Math.toDegrees(Math.acos(aux));
+
         this.normalizeAngles();
     }
 
-    public double getX(){
+    public synchronized double getX(){
         return this.x;
     }
 
-    public double getY(){
+    public synchronized double getY(){
         return this.y;
     }
 
-    public double getZ(){
+    public synchronized double getZ(){
         return this.z;
     }
 
-    public void rotationZ(double angle){
+    public synchronized void rotationZ(double angle){
         double rad = Math.toRadians(angle);
 
         double x = this.x*Math.cos(rad) - this.y*Math.sin(rad);
@@ -78,7 +88,7 @@ public class Direction {
         this.normalize();
     }
 
-    public void rotationX(double angle){
+    public synchronized void rotationX(double angle){
         double rad = Math.toRadians(angle);
 
         double y = this.y*Math.cos(rad) - this.z*Math.sin(rad);
@@ -90,7 +100,7 @@ public class Direction {
         this.normalize();
     }
 
-    public void eulerRotation(double alpha, double beta, double gama){
+    public synchronized void eulerRotation(double alpha, double beta, double gama){
 
         // the euler rotation: zxz
         this.rotationZ(alpha);
@@ -98,7 +108,7 @@ public class Direction {
         this.rotationZ(gama);
     }
 
-    private void normalizeAngles(){
+    private synchronized void normalizeAngles(){
 
         while(this.alpha > 360.0){
             this.alpha -= 360.0;
@@ -111,7 +121,7 @@ public class Direction {
         this.beta = Math.max(this.MIN_BETA, Math.min(this.MAX_BETA, this.beta));
     }
 
-    public void setDirection(double alpha, double beta){
+    public synchronized void setDirection(double alpha, double beta){
         this.alpha = alpha;
         this.beta = beta;
 
@@ -122,27 +132,23 @@ public class Direction {
         this.z = Math.sin(Math.toRadians(this.beta));
     }
 
-    public void addAlpha(double dalpha){
+    public synchronized void addAlpha(double dalpha){
         this.alpha = this.alpha + dalpha;
-        
-        this.normalizeAngles();
 
         this.setDirection(this.alpha, this.beta);
     }
 
-    public void addBeta(double dbeta){
+    public synchronized void addBeta(double dbeta){
         this.beta = this.beta + dbeta;
 
-        this.normalizeAngles();
-
         this.setDirection(this.alpha, this.beta);
     }
 
-    public double getAlpha(){
+    public synchronized double getAlpha(){
         return this.alpha;
     }
 
-    public double getBeta(){
+    public synchronized double getBeta(){
         return this.beta;
     }
 }

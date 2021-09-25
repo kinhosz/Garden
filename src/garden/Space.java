@@ -87,19 +87,19 @@ public class Space{
             else if(ev instanceof MouseEv){
 
                 MouseEv e = (MouseEv) ev;
-                camera.horizontalRotation(0.05 * (150 - e.getX()));
-                System.out.println("add = " + (0.05 * (150 - e.getX())));
-                //camera.verticalRotation(0.5 * (150 - e.getY()));
+                camera.horizontalRotation(0.05 * (150- e.getX()));
+                camera.verticalRotation(0.05 * (150 - e.getY()));
             }
             else if(ev instanceof TimerEv){
 
                 if(camera.updated()){
+                    Event event2 = new Event();
+
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
 
-                    //System.out.println("flip = " + event.elapsed());
-                    event = new Event();
+                    System.out.println("flip = " + event2.elapsed());
                 }
             }
         }

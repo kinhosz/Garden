@@ -71,10 +71,10 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
+        this.splitImage(9, p, d);
+        
         JLabel label = this.createImage();
-
-        this.splitImage(1, p, d);
-
+        
         return label;
     }
 
@@ -89,7 +89,7 @@ public class Vision {
         int block = (int)Math.sqrt(threads);
 
         Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
-        Direction myDirection = new Direction(d.getX(), d.getY(), d.getZ());
+        Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
 
         double v0 = -this.verticalAngleRange/2;
         double vf = this.verticalAngleRange/2;
@@ -101,8 +101,8 @@ public class Vision {
         int dx = (int)(this.height + block - 1)/block;
         int dy = (int)(this.width + block - 1)/block;
 
-        double dv = (vf - v0)/this.height;
-        double dh = (hf - h0)/this.width;
+        double dv = this.verticalAngleRange/this.height;
+        double dh = this.horizontalAngleRange/this.width;
 
         Queue party = new Queue();
 
@@ -113,6 +113,8 @@ public class Vision {
             int xf = Math.min(x + dx, this.height) - 1;
             if(xf < x) continue;
 
+            double v0_copy = vf_copy - dv*(xf - x);
+
             for(int y=0;y<this.width;y+=dy){
 
                 int yf = Math.min(y + dy, this.width) - 1;
@@ -120,7 +122,6 @@ public class Vision {
                 if(yf < y) continue;
 
                 double hf_copy = h0_copy + dh*(yf - y);
-                double v0_copy = vf_copy - dv*(xf - x);
 
                 Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
                 pool.setAngleRange(v0_copy, vf_copy, h0_copy, hf_copy);
@@ -129,9 +130,9 @@ public class Vision {
 
                 party.push(pool);
 
-                h0_copy = hf_copy + dh*(yf - y);
+                h0_copy = hf_copy + dh;
             }
-            vf_copy = vf_copy - dv*(xf - x);
+            vf_copy = v0_copy - dv;
         }
 
         while(!party.empty()){
