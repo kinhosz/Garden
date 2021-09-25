@@ -90,11 +90,9 @@ public class Vision {
 
         Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
         Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
-
-        double v0 = -this.verticalAngleRange/2;
+        
         double vf = this.verticalAngleRange/2;
         double h0 = -this.horizontalAngleRange/2;
-        double hf = this.horizontalAngleRange/2;
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 

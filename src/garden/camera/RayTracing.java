@@ -12,7 +12,6 @@ public class RayTracing{
     private int[] buffer;
     private int x0, xf;
     private int y0, yf;
-    private int height;
     private int width;
 
     public RayTracing(Point p, Direction d, int[] buffer, int x0, int xf, int y0, int yf, int height, int width){
@@ -23,7 +22,6 @@ public class RayTracing{
         this.y0 = y0;
         this.xf = xf;
         this.yf = yf;
-        this.height = height;
         this.width = width;
     }
     

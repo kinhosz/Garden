@@ -11,8 +11,6 @@ import event.MouseEv;
 import event.TimerEv;
 import handle.Timer;
 
-import event.Event;
-
 public class Space{
 
     private Camera camera;
@@ -53,8 +51,6 @@ public class Space{
 
         timer.start();
 
-        Event event = new Event();
-
         while(true){
 
             Event ev;
@@ -93,13 +89,10 @@ public class Space{
             else if(ev instanceof TimerEv){
 
                 if(camera.updated()){
-                    Event event2 = new Event();
 
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
-
-                    System.out.println("flip = " + event2.elapsed());
                 }
             }
         }
