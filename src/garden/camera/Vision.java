@@ -71,7 +71,7 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(9, p, d);
+        this.splitImage(25, p, d);
         
         JLabel label = this.createImage();
         

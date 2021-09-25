@@ -29,21 +29,114 @@ public class RayTracing{
     
     public void start(){
 
-        Color c;
+        int r = 0;
+        int g = 0;
+        int b = 0;
 
-        if(this.direction.getX() >= 0.0 && this.direction.getY() >= 0.0){
-            c = new Color(0,0,0);
+        double len = 100;
+
+        double mini = 1e9;
+
+        double t;
+
+        double px = this.position.getX();
+        double py = this.position.getY();
+        double pz = this.position.getZ();
+
+        double dx = this.direction.getX();
+        double dy = this.direction.getY();
+        double dz = this.direction.getZ();
+
+        double x;
+        double y;
+        double z;
+
+        if(dx != 0.0){
+
+            // face 1
+            t = (-len - px)/dx;
+            y = py + dy*t;
+            z = pz + dz*t;
+
+            if(t >= 0.0 && (y >= -len && y <= len) && (z >= -len && z <= len) && t <= mini){
+                mini = t;
+                r = 255;
+                g = 0;
+                b = 0;
+            }
+
+            // face 2
+            t = (len - px)/dx;
+            y = py + dy*t;
+            z = pz + dz*t;
+
+            if(t >= 0.0 && (y >= -len && y <= len) && (z >= -len && z <= len) && t <= mini){
+                mini = t;
+                r = 0;
+                g = 255;
+                b = 0;
+            }
         }
-        else if(this.direction.getX() >= 0.0){
-            c = new Color(255,255,255);
+
+        if(dy != 0){
+
+            // face 3
+            t = (-len - py)/dy;
+            x = px + dx*t;
+            z = pz + dz*t;
+
+            if(t >= 0.0 && (x >= -len && x <= len) && (z >= -len && z <= len) && t <= mini){
+                mini = t;
+                r = 0;
+                g = 0;
+                b = 255;
+            }
+
+            // face 4
+            t = (len - py)/dy;
+            x = px + dx*t;
+            z = pz + dz*t;
+
+            if(t >= 0.0 && (x >= -len && x <= len) && (z >= -len && z <= len) && t <= mini){
+                mini = t;
+                r = 255;
+                g = 255;
+                b = 0;
+            }
         }
-        else if(this.direction.getX() < 0.0 && this.direction.getY() < 0.0){
-            c = new Color(0, 0, 255);
+
+        if(dz != 0){
+            // face 5
+            t = (-len - pz)/dz;
+            x = px + dx*t;
+            y = py + dy*t;
+
+            if(t >= 0.0 && (x >= -len && x <= len) && (y >= -len && y <= len) && t <= mini){
+                mini = t;
+                r = 255;
+                g = 0;
+                b = 255;
+            }
+
+            // face 6
+            t = (len - pz)/dz;
+            x = px + dx*t;
+            y = py + dy*t;
+
+            if(t >= 0.0 && (x >= -len && x <= len) && (y >= -len && y <= len) && t <= mini){
+                mini = t;
+                r = 0;
+                g = 255;
+                b = 255;
+            }
         }
-        else{
-            c = new Color(255,0,0);
-        }
-        
+
+        this.setColor(r, g, b);
+    }
+
+    private void setColor(int r, int g, int b){
+        Color c = new Color(r, g, b);
+
         for(int i=this.x0; i<=this.xf;i++){
             for(int j=this.y0; j<=this.yf;j++){
                 this.buffer[i*this.width + j] = (int)c.getRGB();

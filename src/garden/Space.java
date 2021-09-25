@@ -32,7 +32,7 @@ public class Space{
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 100);
+        Timer timer = new Timer(buffer, "display", 200);
         
         motion.lockCursor();
         motion.setCursorPosition(150, 150);
