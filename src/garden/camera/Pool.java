@@ -62,7 +62,7 @@ public class Pool extends Thread{
             double h0 = this.h0;
             for(int j=this.y0; j<=this.yf; j++){
                 Direction myD = new Direction(0.0, 1.0, 0.0);
-                myD.eulerRotation(this.direction.getAlpha(), this.direction.getBeta() + vf, h0);
+                myD.eulerRotation(this.direction.getAlpha() - 90.0, this.direction.getBeta() + vf, h0);
 
                 RayTracing rt = new RayTracing(this.point, myD, this.image, i, i, j, j, this.height, this.width);
                 rt.start();
