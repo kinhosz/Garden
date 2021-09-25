@@ -8,8 +8,6 @@ public class Direction {
     private double z;
     private double alpha;
     private double beta;
-    private final double MAX_BETA = 44;
-    private final double MIN_BETA = -44;
     private final double eps = -1e9;
 
     public Direction(){
@@ -54,9 +52,14 @@ public class Direction {
         }
 
         this.beta = Math.toDegrees(Math.asin(this.z));
-        this.beta = Math.max(this.MIN_BETA, Math.min(this.MAX_BETA, this.beta));
-        
-        double aux = this.x/Math.cos(Math.toRadians(this.beta));
+        double aux = 0.0;
+
+        if(Math.abs(Math.cos(Math.toRadians(this.beta))) <= this.eps){
+            aux = this.x/this.eps;
+        }
+        else{
+            aux = this.x/Math.cos(Math.toRadians(this.beta));
+        }
         aux = Math.min(aux, 1.0);
         
         this.alpha = Math.toDegrees(Math.acos(aux));
@@ -118,7 +121,13 @@ public class Direction {
             this.alpha += 360.0;
         }
 
-        this.beta = Math.max(this.MIN_BETA, Math.min(this.MAX_BETA, this.beta));
+        while(this.beta > 360.0){
+            this.beta -= 360.0;
+        }
+
+        while(this.beta < 0){
+            this.beta += 360.0;
+        }
     }
 
     public synchronized void setDirection(double alpha, double beta){

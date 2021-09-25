@@ -83,7 +83,7 @@ public class Space{
             else if(ev instanceof MouseEv){
 
                 MouseEv e = (MouseEv) ev;
-                camera.horizontalRotation(0.05 * (150- e.getX()));
+                camera.horizontalRotation(0.05 * (150 - e.getX()));
                 camera.verticalRotation(0.05 * (150 - e.getY()));
             }
             else if(ev instanceof TimerEv){
