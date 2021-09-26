@@ -51,6 +51,10 @@ public class Direction {
             this.z = this.z/norma;
         }
 
+        if(this.z > 1.0){
+            this.z = 1.0;
+        }
+
         this.beta = Math.toDegrees(Math.asin(this.z));
         double aux = 0.0;
 

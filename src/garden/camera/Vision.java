@@ -15,8 +15,8 @@ public class Vision {
     private int width;
     private int height;
     private BufferedImage image;
-    private double verticalAngleRange = 120.0;
-    private double horizontalAngleRange = 120.0;
+    private double verticalAngleRange = 90.0;
+    private double horizontalAngleRange = 90.0;
     private boolean locked;
 
     public Vision(int width, int height){
@@ -48,7 +48,7 @@ public class Vision {
     }
 
     public int getHeight(){
-        return this.width;
+        return this.height;
     }
 
     public double getVerticalAngleRange(){
