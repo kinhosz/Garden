@@ -8,7 +8,7 @@
 ![Github open issues](https://img.shields.io/github/issues/kinhosz/Garden?style=for-the-badge)
 
 
-> Uma biblioteca para criações de jogos 3D.
+> Uma biblioteca com Ray Tracing para criações de jogos 3D.
 
 ### Features a serem desenvolvidas
 
