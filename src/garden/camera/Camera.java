@@ -142,10 +142,10 @@ public class Camera {
     public JLabel takePicture(){
 
         JLabel label = null;
-
+        
         try {
             label = this.vision.takePicture(this.location, this.direction);
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -165,7 +165,7 @@ public class Camera {
     }
 
     public double getYDirection(){
-        return this.direction.getX();
+        return this.direction.getY();
     }
 
     public double getZDirection(){
@@ -178,5 +178,9 @@ public class Camera {
 
     public double getBetaDirection(){
         return this.direction.getBeta();
+    }
+
+    public boolean updated(){
+        return !this.vision.locked();
     }
 }

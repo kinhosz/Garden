@@ -9,6 +9,7 @@ public class KeyboardEv extends Event{
     private int type;
 
     public KeyboardEv(int type, KeyEvent e){
+        super();
         this.keyChar = e.getKeyChar();
         this.keyCode = e.getKeyCode();
         this.type = type;

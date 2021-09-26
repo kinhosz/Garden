@@ -13,6 +13,7 @@ public class MouseEv extends Event{
     private int type;
 
     public MouseEv(int type, MouseEvent e){
+        super();
         this.clicks = e.getClickCount();
         this.x = e.getX();
         this.y = e.getY();
