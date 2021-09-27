@@ -92,7 +92,7 @@ public class Vision {
         Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
         
         double vf = this.verticalAngleRange/2;
-        double h0 = -this.horizontalAngleRange/2;
+        double hf = this.horizontalAngleRange/2;
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 
@@ -107,7 +107,7 @@ public class Vision {
         double vf_copy = vf;
 
         for(int x=0;x<this.height;x+=dx){
-            double h0_copy = h0;
+            double hf_copy = hf;
             int xf = Math.min(x + dx, this.height) - 1;
             if(xf < x) continue;
 
@@ -119,7 +119,7 @@ public class Vision {
 
                 if(yf < y) continue;
 
-                double hf_copy = h0_copy + dh*(yf - y);
+                double h0_copy = hf_copy - dh*(yf - y);
 
                 Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
                 pool.setAngleRange(v0_copy, vf_copy, h0_copy, hf_copy);
@@ -128,7 +128,7 @@ public class Vision {
 
                 party.push(pool);
 
-                h0_copy = hf_copy + dh;
+                hf_copy = h0_copy - dh;
             }
             vf_copy = v0_copy - dv;
         }
