@@ -140,13 +140,6 @@ public class Direction {
 
         this.normalizeAngles();
 
-        if(this.beta >= 89.0 && this.beta <= 180.0){
-            this.beta = 89;
-        }
-        if(this.beta >= 180.0 && this.beta <= 271.0){
-            this.beta = 271.0;
-        }
-
         this.x = Math.cos(Math.toRadians(this.alpha)) * Math.cos(Math.toRadians(this.beta));
         this.y = Math.sin(Math.toRadians(this.alpha)) * Math.cos(Math.toRadians(this.beta));
         this.z = Math.sin(Math.toRadians(this.beta));
