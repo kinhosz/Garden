@@ -171,4 +171,46 @@ public class Direction {
     public synchronized double getBeta(){
         return this.beta;
     }
+
+    public Direction crossProduct(Direction B){
+
+        double ax, ay, az;
+        double bx, by, bz;
+
+        ax = this.x;
+        ay = this.y;
+        az = this.z;
+
+        bx = B.getX();
+        by = B.getY();
+        bz = B.getZ();
+
+        double cx, cy, cz;
+
+        cx = ay*bz - az*by;
+        cy = az*bx - ax*bz;
+        cz = ax*by - ay*bx;
+
+        Direction C = new Direction(cx, cy, cz);
+
+        return C;
+    }
+
+    public double dotProduct(Direction B){
+
+        double ax, ay, az;
+        double bx, by, bz;
+
+        ax = this.x;
+        ay = this.y;
+        az = this.z;
+
+        bx = B.getX();
+        by = B.getY();
+        bz = B.getZ();
+
+        double dot = ax*bx + ay*by + az*bz;
+
+        return dot;
+    }
 }
