@@ -206,4 +206,31 @@ public class Direction {
 
         return dot;
     }
+
+    public Direction getUpVector(){
+
+        double alpha = Math.toRadians(this.alpha);
+        double beta = Math.toRadians(this.beta);
+
+        double x = -Math.cos(alpha)*Math.sin(beta);
+        double y = -Math.sin(alpha)*Math.sin(beta);
+        double z = Math.cos(beta);
+
+        Direction d = new Direction(x, y, z);
+
+        return d;
+    }
+
+    public Direction getLeftVector(){
+
+        double alpha = Math.toRadians(this.alpha);
+
+        double x = Math.sin(alpha);
+        double y = -Math.cos(alpha);
+        double z = 0.0;
+
+        Direction d = new Direction(x, y, z);
+
+        return d;
+    }
 }
