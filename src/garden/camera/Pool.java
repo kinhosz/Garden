@@ -64,11 +64,7 @@ public class Pool extends Thread{
                 Direction myD = new Direction(this.direction.getAlpha(), this.direction.getBeta());
                 myD.addBeta(vf);
 
-                try {
-                    myD = myD.getAnotherVectorZ(hf);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
+                myD = myD.getAnotherVectorZ(hf);
 
                 RayTracing rt = new RayTracing(this.point, myD, this.image, i, i, j, j, this.height, this.width);
                 rt.start();

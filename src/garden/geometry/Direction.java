@@ -234,7 +234,7 @@ public class Direction {
         return d;
     }
 
-    public Direction getAnotherVectorZ(double thetaDegree) throws Exception{
+    public Direction getAnotherVectorZ(double thetaDegree){
 
         Direction U = this.getUpVector();
         Direction L = this.getLeftVector();
@@ -265,7 +265,7 @@ public class Direction {
         uz = U.getZ();
 
         if(nx <= this.eps){
-            throw new Exception("nx is zero");
+           nx = this.eps;
         }
 
         c1 = (cos_theta * lx)/nx;
@@ -280,8 +280,10 @@ public class Direction {
 
         c6 = -(nz * ux)/nx;
 
-        if((c2 + ly) <= this.eps){
-            throw new Exception("(c2 + ly) is zero");
+        double exc2 = (c2 + ly);
+
+        if(exc2 <= this.eps){
+            exc2 = this.eps;
         }
 
         c7 = c4 - sin_theta*(c5 + uy)/(c2 + ly) - c1*(c5 + uy)/(c2 + ly);
@@ -291,7 +293,7 @@ public class Direction {
         c9 = c6 + uz + c8;
 
         if(c9 <= this.eps){
-            throw new Exception("c9 is zero.");
+            c9 = this.eps;
         }
 
         pz = -c7/c9;
