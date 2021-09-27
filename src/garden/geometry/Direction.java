@@ -233,4 +233,75 @@ public class Direction {
 
         return d;
     }
+
+    public Direction getAnotherVectorZ(double thetaDegree) throws Exception{
+
+        Direction U = this.getUpVector();
+        Direction L = this.getLeftVector();
+
+        double theta = Math.toRadians(thetaDegree);
+        double sin_theta = Math.sin(theta);
+        double cos_theta = Math.cos(theta);
+
+        double nx, ny, nz;
+        double lx, ly, lz;
+        double ux, uy, uz;
+        double px, py, pz;
+
+        double c1, c2, c3;
+        double c4, c5, c6;
+        double c7, c8, c9;
+
+        nx = this.x;
+        ny = this.y;
+        nz = this.z;
+
+        lx = L.getX();
+        ly = L.getY();
+        lz = L.getZ();
+
+        ux = U.getX();
+        uy = U.getY();
+        uz = U.getZ();
+
+        if(nx <= this.eps){
+            throw new Exception("nx is zero");
+        }
+
+        c1 = (cos_theta * lx)/nx;
+
+        c2 = -(ny  * lx)/nx;
+
+        c3 = -(nz * lx)/nx;
+
+        c4 = (cos_theta * ux)/nx;
+
+        c5 = - (ny * ux)/nx;
+
+        c6 = -(nz * ux)/nx;
+
+        if((c2 + ly) <= this.eps){
+            throw new Exception("(c2 + ly) is zero");
+        }
+
+        c7 = c4 - sin_theta*(c5 + uy)/(c2 + ly) - c1*(c5 + uy)/(c2 + ly);
+
+        c8 = -(c3 + lz)*(c5 + uy)/(c2 + ly);
+
+        c9 = c6 + uz + c8;
+
+        if(c9 <= this.eps){
+            throw new Exception("c9 is zero.");
+        }
+
+        pz = -c7/c9;
+
+        py = (-sin_theta - c1 - pz*(c3 + lz))/(c2 + ly);
+
+        px = (cos_theta - py*ny - pz*nz)/nx;
+
+        Direction d = new Direction(px, py, pz);
+
+        return d;
+    }
 }
