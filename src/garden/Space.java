@@ -25,7 +25,7 @@ public class Space{
 
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
-        Space space = new Space(360);
+        Space space = new Space(240);
         Buffer buffer = new Buffer();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
@@ -90,8 +90,6 @@ public class Space{
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
-
-                    System.out.println("FPS: " + ((int)(1000/ev.elapsed())));
                 }
             }
         }
