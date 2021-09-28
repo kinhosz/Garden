@@ -90,28 +90,18 @@ public class Vision {
 
         Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
         Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
-        
-        double vf = this.verticalAngleRange/2;
-        double hf = this.horizontalAngleRange/2;
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 
         int dx = (int)(this.height + block - 1)/block;
         int dy = (int)(this.width + block - 1)/block;
 
-        double dv = this.verticalAngleRange/this.height;
-        double dh = this.horizontalAngleRange/this.width;
-
         Queue party = new Queue();
 
-        double vf_copy = vf;
-
         for(int x=0;x<this.height;x+=dx){
-            double hf_copy = hf;
+
             int xf = Math.min(x + dx, this.height) - 1;
             if(xf < x) continue;
-
-            double v0_copy = vf_copy - dv*(xf - x);
 
             for(int y=0;y<this.width;y+=dy){
 
@@ -119,18 +109,13 @@ public class Vision {
 
                 if(yf < y) continue;
 
-                double h0_copy = hf_copy - dh*(yf - y);
-
                 Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
-                pool.setAngleRange(v0_copy, vf_copy, h0_copy, hf_copy);
+                pool.setAngleRange(this.verticalAngleRange, this.horizontalAngleRange);
                 pool.setShape(x, xf, y, yf);
                 pool.start();
 
                 party.push(pool);
-
-                hf_copy = h0_copy - dh;
             }
-            vf_copy = v0_copy - dv;
         }
 
         while(!party.empty()){

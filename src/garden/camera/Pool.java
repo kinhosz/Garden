@@ -9,10 +9,8 @@ public class Pool extends Thread{
     
     private Point point;
     private Direction direction;
-    private double v0;
-    private double vf;
-    private double h0;
-    private double hf;
+    private double verticalAngleRange;
+    private double horizontalAngleRange;
     private int x0;
     private int xf;
     private int y0;
@@ -31,11 +29,9 @@ public class Pool extends Thread{
         this.direction = d;
     }
 
-    public void setAngleRange(double v0, double vf, double h0, double hf){
-        this.v0 = v0;
-        this.vf = vf;
-        this.h0 = h0;
-        this.hf = hf;
+    public void setAngleRange(double verticalAngleRange, double horizontalAngleRange){
+        this.verticalAngleRange = verticalAngleRange;
+        this.horizontalAngleRange = horizontalAngleRange;
     }
 
     public void setShape(int x0, int xf, int y0, int yf){
@@ -48,29 +44,27 @@ public class Pool extends Thread{
     @Override
     public void run(){
 
-        double vf = this.vf;
-        int largeX = (this.xf - this.x0);
-        int largeY = (this.yf - this.y0);
-
-        if(largeX == 0) largeX++;
-        if(largeY == 0) largeY++;
-
-        double dv = (this.vf - this.v0)/largeX;
-        double dh = (this.hf - this.h0)/largeY;
+        double dv = this.verticalAngleRange/this.height;
+        int xmid = this.height/2;
+        int ymid = this.width/2;
 
         for(int i=this.x0; i<=this.xf; i++){
-            double hf = this.hf;
+
+            double beta = (double)(xmid - i)*dv;
+            double horizontalAngleRange = this.horizontalAngleRange*Math.cos(Math.toRadians(beta));
+            double dh = horizontalAngleRange/this.width;
+
             for(int j=this.y0; j<=this.yf; j++){
                 Direction myD = new Direction(this.direction.getAlpha(), this.direction.getBeta());
-                myD.addBeta(vf);
+                myD.addBeta(beta);
 
-                myD = myD.getAnotherVectorZ(hf);
+                double theta = (double)(ymid - j)*dh;
+
+                myD = myD.getAnotherVectorZ(theta);
 
                 RayTracing rt = new RayTracing(this.point, myD, this.image, i, i, j, j, this.height, this.width);
                 rt.start();
-                hf -= dh;
             }
-            vf -= dv;
         }
     }
 }
