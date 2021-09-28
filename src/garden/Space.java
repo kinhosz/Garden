@@ -2,7 +2,7 @@ import java.awt.AWTException;
 import javax.swing.JFrame;
 import handle.Keyboard;
 import handle.Mouse;
-import bits.Queue;
+import struct.Buffer;
 import handle.Motion;
 import camera.Camera;
 import event.Event;
@@ -26,11 +26,11 @@ public class Space{
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
         Space space = new Space(360);
-        Queue buffer = new Queue();
+        Buffer buffer = new Buffer();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 200);
+        Timer timer = new Timer(buffer, "display", 10);
         
         Camera camera = space.getCamera();
 
