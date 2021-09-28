@@ -71,7 +71,7 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(25, p, d);
+        this.splitImage(100, p, d);
         
         JLabel label = this.createImage();
         
@@ -80,7 +80,7 @@ public class Vision {
 
     private void splitImage(int threads, Point p, Direction d) throws Exception{
 
-        if(threads > 100){
+        if(threads > 300){
             throw new Exception("How many threads!");
         }
 

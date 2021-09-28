@@ -30,7 +30,7 @@ public class Space{
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 200);
+        Timer timer = new Timer(buffer, "display", 100);
         
         Camera camera = space.getCamera();
 
@@ -91,6 +91,8 @@ public class Space{
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
+
+                    System.out.println("FPS: " + ((int)(1000/ev.elapsed())));
                 }
             }
         }
