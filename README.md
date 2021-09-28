@@ -14,7 +14,7 @@
 
 O projeto ainda está em desenvolvimento e as próximas tarefas a serem implementadas serão:
 
-- [v] [Campo de visão](https://github.com/kinhosz/Garden/milestone/1)
+- [x] [Campo de visão](https://github.com/kinhosz/Garden/milestone/1)
 - [ ] [Espaço tridimensional](https://github.com/kinhosz/Garden/milestone/2)
 - [ ] [Formas e objetos](https://github.com/kinhosz/Garden/milestone/3)
 - [ ] [Iluminação](https://github.com/kinhosz/Garden/milestone/4)
