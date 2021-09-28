@@ -286,9 +286,9 @@ public class Direction {
             exc2 = this.eps;
         }
 
-        c7 = c4 - sin_theta*(c5 + uy)/(c2 + ly) - c1*(c5 + uy)/(c2 + ly);
+        c7 = c4 - sin_theta*(c5 + uy)/(c2 + ly) - c1*(c5 + uy)/exc2;
 
-        c8 = -(c3 + lz)*(c5 + uy)/(c2 + ly);
+        c8 = -(c3 + lz)*(c5 + uy)/exc2;
 
         c9 = c6 + uz + c8;
 
@@ -298,7 +298,7 @@ public class Direction {
 
         pz = -c7/c9;
 
-        py = (-sin_theta - c1 - pz*(c3 + lz))/(c2 + ly);
+        py = (-sin_theta - c1 - pz*(c3 + lz))/exc2;
 
         px = (cos_theta - py*ny - pz*nz)/nx;
 
