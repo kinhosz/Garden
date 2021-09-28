@@ -32,14 +32,14 @@ public class Space{
         Motion motion = new Motion(buffer, frame);
         Timer timer = new Timer(buffer, "display", 200);
         
+        Camera camera = space.getCamera();
+
         motion.lockCursor();
-        motion.setCursorPosition(150, 150);
+        motion.setCursorPosition(camera.getWidth()/2, camera.getHeight()/2);
 
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(motion);
-
-        Camera camera = space.getCamera();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(camera.takePicture());
@@ -61,8 +61,6 @@ public class Space{
 
             if(ev instanceof KeyboardEv){
 
-                //System.out.println("keyboard = " + ev.elapsed());
-
                 KeyboardEv e = (KeyboardEv) ev;
                 if(e.getKeyChar() == 'f' || e.getKeyChar() == 'F'){
                     break;
@@ -83,8 +81,8 @@ public class Space{
             else if(ev instanceof MouseEv){
 
                 MouseEv e = (MouseEv) ev;
-                camera.horizontalRotation(0.05 * (150 - e.getX()));
-                camera.verticalRotation(0.05 * (150 - e.getY()));
+                camera.horizontalRotation(0.05 * (camera.getWidth()/2 - e.getX()));
+                camera.verticalRotation(0.05 * (camera.getHeight()/2 - e.getY()));
             }
             else if(ev instanceof TimerEv){
 
