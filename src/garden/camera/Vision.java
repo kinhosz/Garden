@@ -8,14 +8,14 @@ import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
-import bits.Queue;
+import struct.Buffer;
 
 public class Vision {
 
     private int width;
     private int height;
     private BufferedImage image;
-    private double verticalAngleRange = 90.0;
+    private double verticalAngleRange = 60.0;
     private double horizontalAngleRange = 90.0;
     private boolean locked;
 
@@ -71,7 +71,7 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(25, p, d);
+        this.splitImage(4, p, d);
         
         JLabel label = this.createImage();
         
@@ -80,7 +80,7 @@ public class Vision {
 
     private void splitImage(int threads, Point p, Direction d) throws Exception{
 
-        if(threads > 100){
+        if(threads > 300){
             throw new Exception("How many threads!");
         }
 
@@ -90,28 +90,18 @@ public class Vision {
 
         Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
         Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
-        
-        double vf = this.verticalAngleRange/2;
-        double h0 = -this.horizontalAngleRange/2;
 
         int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
 
         int dx = (int)(this.height + block - 1)/block;
         int dy = (int)(this.width + block - 1)/block;
 
-        double dv = this.verticalAngleRange/this.height;
-        double dh = this.horizontalAngleRange/this.width;
-
-        Queue party = new Queue();
-
-        double vf_copy = vf;
+        Buffer party = new Buffer();
 
         for(int x=0;x<this.height;x+=dx){
-            double h0_copy = h0;
+
             int xf = Math.min(x + dx, this.height) - 1;
             if(xf < x) continue;
-
-            double v0_copy = vf_copy - dv*(xf - x);
 
             for(int y=0;y<this.width;y+=dy){
 
@@ -119,23 +109,17 @@ public class Vision {
 
                 if(yf < y) continue;
 
-                double hf_copy = h0_copy + dh*(yf - y);
-
                 Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
-                pool.setAngleRange(v0_copy, vf_copy, h0_copy, hf_copy);
+                pool.setAngleRange(this.verticalAngleRange, this.horizontalAngleRange);
                 pool.setShape(x, xf, y, yf);
                 pool.start();
 
-                party.push(pool);
-
-                h0_copy = hf_copy + dh;
+                party.put(pool);
             }
-            vf_copy = v0_copy - dv;
         }
 
         while(!party.empty()){
-            Pool pool = (Pool)party.front();
-            party.pop();
+            Pool pool = (Pool)party.get();
 
             pool.join();
         }

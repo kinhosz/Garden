@@ -2,20 +2,20 @@ package handle;
 
 import java.lang.Thread;
 
-import bits.Queue;
+import struct.Buffer;
 import event.TimerEv;
 
 public class Timer extends Thread{
     
-    private Queue buffer;
+    private Buffer buffer;
     private String name;
     private boolean alive;
     private long delay;
 
-    public Timer(Queue q, String name, long ms){
+    public Timer(Buffer b, String name, long ms){
         super();
 
-        this.buffer = q;
+        this.buffer = b;
         this.name = name;
         this.alive = true;
         this.delay = ms;
@@ -26,7 +26,7 @@ public class Timer extends Thread{
 
         while(this.alive){
             TimerEv t = new TimerEv(TimerEv.TIMER, this.name);
-            this.buffer.push(t);
+            this.buffer.put(t);
 
             try {
                 Thread.sleep(this.delay);

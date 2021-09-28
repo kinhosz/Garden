@@ -2,7 +2,7 @@ import java.awt.AWTException;
 import javax.swing.JFrame;
 import handle.Keyboard;
 import handle.Mouse;
-import bits.Queue;
+import struct.Buffer;
 import handle.Motion;
 import camera.Camera;
 import event.Event;
@@ -15,8 +15,8 @@ public class Space{
 
     private Camera camera;
 
-    public Space(int width, int height){
-        this.camera = new Camera(width, height);
+    public Space(int height){
+        this.camera = new Camera(height);
     }
 
     public Camera getCamera(){
@@ -25,21 +25,21 @@ public class Space{
 
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
-        Space space = new Space(300,300);
-        Queue buffer = new Queue();
+        Space space = new Space(360);
+        Buffer buffer = new Buffer();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 200);
+        Timer timer = new Timer(buffer, "display", 300);
         
+        Camera camera = space.getCamera();
+
         motion.lockCursor();
-        motion.setCursorPosition(150, 150);
+        motion.setCursorPosition(camera.getWidth()/2, camera.getHeight()/2);
 
         frame.addKeyListener(keyboard);
         frame.addMouseListener(mouse);
         frame.addMouseMotionListener(motion);
-
-        Camera camera = space.getCamera();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(camera.takePicture());
@@ -56,12 +56,9 @@ public class Space{
             Event ev;
 
             if(buffer.size() == 0) continue;
-            ev = (Event)buffer.front();
-            buffer.pop();
+            ev = (Event)buffer.get();
 
             if(ev instanceof KeyboardEv){
-
-                //System.out.println("keyboard = " + ev.elapsed());
 
                 KeyboardEv e = (KeyboardEv) ev;
                 if(e.getKeyChar() == 'f' || e.getKeyChar() == 'F'){
@@ -83,8 +80,8 @@ public class Space{
             else if(ev instanceof MouseEv){
 
                 MouseEv e = (MouseEv) ev;
-                camera.horizontalRotation(0.05 * (150 - e.getX()));
-                camera.verticalRotation(0.05 * (150 - e.getY()));
+                camera.horizontalRotation(0.05 * (camera.getWidth()/2 - e.getX()));
+                camera.verticalRotation(0.05 * (camera.getHeight()/2 - e.getY()));
             }
             else if(ev instanceof TimerEv){
 
@@ -93,6 +90,8 @@ public class Space{
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
+
+                    System.out.println("FPS: " + ((int)(1000/ev.elapsed())));
                 }
             }
         }

@@ -140,13 +140,6 @@ public class Direction {
 
         this.normalizeAngles();
 
-        if(this.beta >= 89.0 && this.beta <= 180.0){
-            this.beta = 89;
-        }
-        if(this.beta >= 180.0 && this.beta <= 271.0){
-            this.beta = 271.0;
-        }
-
         this.x = Math.cos(Math.toRadians(this.alpha)) * Math.cos(Math.toRadians(this.beta));
         this.y = Math.sin(Math.toRadians(this.alpha)) * Math.cos(Math.toRadians(this.beta));
         this.z = Math.sin(Math.toRadians(this.beta));
@@ -170,5 +163,147 @@ public class Direction {
 
     public synchronized double getBeta(){
         return this.beta;
+    }
+
+    public Direction crossProduct(Direction B){
+
+        double ax, ay, az;
+        double bx, by, bz;
+
+        ax = this.x;
+        ay = this.y;
+        az = this.z;
+
+        bx = B.getX();
+        by = B.getY();
+        bz = B.getZ();
+
+        double cx, cy, cz;
+
+        cx = ay*bz - az*by;
+        cy = az*bx - ax*bz;
+        cz = ax*by - ay*bx;
+
+        Direction C = new Direction(cx, cy, cz);
+
+        return C;
+    }
+
+    public double dotProduct(Direction B){
+
+        double ax, ay, az;
+        double bx, by, bz;
+
+        ax = this.x;
+        ay = this.y;
+        az = this.z;
+
+        bx = B.getX();
+        by = B.getY();
+        bz = B.getZ();
+
+        double dot = ax*bx + ay*by + az*bz;
+
+        return dot;
+    }
+
+    public Direction getUpVector(){
+
+        double alpha = Math.toRadians(this.alpha);
+        double beta = Math.toRadians(this.beta);
+
+        double x = -Math.cos(alpha)*Math.sin(beta);
+        double y = -Math.sin(alpha)*Math.sin(beta);
+        double z = Math.cos(beta);
+
+        Direction d = new Direction(x, y, z);
+
+        return d;
+    }
+
+    public Direction getLeftVector(){
+
+        double alpha = Math.toRadians(this.alpha);
+
+        double x = Math.sin(alpha);
+        double y = -Math.cos(alpha);
+        double z = 0.0;
+
+        Direction d = new Direction(x, y, z);
+
+        return d;
+    }
+
+    public Direction getAnotherVectorZ(double thetaDegree){
+
+        Direction U = this.getUpVector();
+        Direction L = this.getLeftVector();
+
+        double theta = Math.toRadians(thetaDegree);
+        double sin_theta = Math.sin(theta);
+        double cos_theta = Math.cos(theta);
+
+        double nx, ny, nz;
+        double lx, ly, lz;
+        double ux, uy, uz;
+        double px, py, pz;
+
+        double c1, c2, c3;
+        double c4, c5, c6;
+        double c7, c8, c9;
+
+        nx = this.x;
+        ny = this.y;
+        nz = this.z;
+
+        lx = L.getX();
+        ly = L.getY();
+        lz = L.getZ();
+
+        ux = U.getX();
+        uy = U.getY();
+        uz = U.getZ();
+
+        if(nx <= this.eps){
+           nx = this.eps;
+        }
+
+        c1 = (cos_theta * lx)/nx;
+
+        c2 = -(ny  * lx)/nx;
+
+        c3 = -(nz * lx)/nx;
+
+        c4 = (cos_theta * ux)/nx;
+
+        c5 = - (ny * ux)/nx;
+
+        c6 = -(nz * ux)/nx;
+
+        double exc2 = (c2 + ly);
+
+        if(exc2 <= this.eps){
+            exc2 = this.eps;
+        }
+
+        c7 = c4 - sin_theta*(c5 + uy)/(c2 + ly) - c1*(c5 + uy)/exc2;
+
+        c8 = -(c3 + lz)*(c5 + uy)/exc2;
+
+        c9 = c6 + uz + c8;
+
+        if(c9 <= this.eps){
+            c9 = this.eps;
+        }
+
+        pz = -c7/c9;
+
+        py = (-sin_theta - c1 - pz*(c3 + lz))/exc2;
+
+        px = (cos_theta - py*ny - pz*nz)/nx;
+
+        Direction d = new Direction(px, py, pz);
+
+        return d;
     }
 }
