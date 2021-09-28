@@ -11,12 +11,30 @@ public class Camera {
     private int width;
     private int height;
     private Vision vision;
+    private final int resolutionWidth = 16;
+    private final int resolutionHeight = 9;
 
-    public Camera(int width, int height){
+    public Camera(int height){
+
+        this.setResolution(height);
         this.location = new Point();
         this.resize(width, height);
-        this.vision = new Vision(width, height);
+        this.vision = new Vision(this.width, this.height);
         this.direction = new Direction();
+    }
+
+    public void setResolution(int height) {
+        /* examples:
+        2160p: 3840 x 2160.
+        1440p: 2560 x 1440.
+        1080p: 1920 x 1080.
+        720p: 1280 x 720.
+        480p: 854 x 480.
+        360p: 640 x 360.
+        240p: 426 x 240*/
+
+        this.height = height;
+        this.width = (int)this.resolutionWidth*height/this.resolutionHeight;
     }
 
     public void setLocation(double x, double y, double z){
@@ -55,7 +73,7 @@ public class Camera {
         this.direction.setDirection(alpha, beta);
     }
 
-    public void resize(int width, int height){
+    private void resize(int width, int height){
         this.width = width;
         this.height = height;
     }

@@ -15,8 +15,8 @@ public class Space{
 
     private Camera camera;
 
-    public Space(int width, int height){
-        this.camera = new Camera(width, height);
+    public Space(int height){
+        this.camera = new Camera(height);
     }
 
     public Camera getCamera(){
@@ -25,12 +25,12 @@ public class Space{
 
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
-        Space space = new Space(300,300);
+        Space space = new Space(360);
         Queue buffer = new Queue();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 100);
+        Timer timer = new Timer(buffer, "display", 200);
         
         Camera camera = space.getCamera();
 

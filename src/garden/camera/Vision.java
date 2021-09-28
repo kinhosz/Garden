@@ -15,7 +15,7 @@ public class Vision {
     private int width;
     private int height;
     private BufferedImage image;
-    private double verticalAngleRange = 90.0;
+    private double verticalAngleRange = 60.0;
     private double horizontalAngleRange = 90.0;
     private boolean locked;
 
@@ -71,7 +71,7 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(100, p, d);
+        this.splitImage(4, p, d);
         
         JLabel label = this.createImage();
         
