@@ -27,6 +27,7 @@ public class Buffer extends Queue{
     public Object get(){
 
         Object o = this.front();
+        this.pop();
 
         if(o instanceof TimerEv){
             this.timerCount--;

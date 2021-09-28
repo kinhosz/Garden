@@ -56,8 +56,7 @@ public class Space{
             Event ev;
 
             if(buffer.size() == 0) continue;
-            ev = (Event)buffer.front();
-            buffer.pop();
+            ev = (Event)buffer.get();
 
             if(ev instanceof KeyboardEv){
 

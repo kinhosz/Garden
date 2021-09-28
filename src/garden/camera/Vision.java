@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
-import bits.Queue;
+import struct.Buffer;
 
 public class Vision {
 
@@ -96,7 +96,7 @@ public class Vision {
         int dx = (int)(this.height + block - 1)/block;
         int dy = (int)(this.width + block - 1)/block;
 
-        Queue party = new Queue();
+        Buffer party = new Buffer();
 
         for(int x=0;x<this.height;x+=dx){
 
@@ -114,13 +114,12 @@ public class Vision {
                 pool.setShape(x, xf, y, yf);
                 pool.start();
 
-                party.push(pool);
+                party.put(pool);
             }
         }
 
         while(!party.empty()){
-            Pool pool = (Pool)party.front();
-            party.pop();
+            Pool pool = (Pool)party.get();
 
             pool.join();
         }
