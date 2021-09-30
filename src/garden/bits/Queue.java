@@ -11,7 +11,7 @@ public class Queue{
         tail = null;
     }
 
-    synchronized protected void pop(){
+    synchronized public void pop(){
 
         if(this.size > 0){
             this.size--;
@@ -19,14 +19,14 @@ public class Queue{
         }
     }
 
-    synchronized protected Object front(){
+    synchronized public Object front(){
 
         if(this.size == 0) return null;
 
         return this.head.getData();
     }
 
-    synchronized protected void push(Object e){
+    synchronized public void push(Object e){
         
         this.size++;
         Item it = new Item(e);

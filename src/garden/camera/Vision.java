@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
-import struct.Buffer;
+import bits.Queue;
 
 public class Vision {
 
@@ -43,6 +43,16 @@ public class Vision {
         return this.locked;
     }
 
+    public synchronized void lock(){
+
+        this.locked = true;
+    }
+
+    public synchronized void unlock(){
+
+        this.locked = false;
+    }
+
     public int getWidth(){
         return this.width;
     }
@@ -71,7 +81,7 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(4, p, d);
+        this.splitImage(36, p, d);
         
         JLabel label = this.createImage();
         
@@ -84,7 +94,7 @@ public class Vision {
             throw new Exception("How many threads!");
         }
 
-        this.locked = true;
+        this.lock();
 
         int block = (int)Math.sqrt(threads);
 
@@ -96,7 +106,7 @@ public class Vision {
         int dx = (int)(this.height + block - 1)/block;
         int dy = (int)(this.width + block - 1)/block;
 
-        Buffer party = new Buffer();
+        Queue party = new Queue();
 
         for(int x=0;x<this.height;x+=dx){
 
@@ -114,17 +124,18 @@ public class Vision {
                 pool.setShape(x, xf, y, yf);
                 pool.start();
 
-                party.put(pool);
+                party.push(pool);
             }
         }
 
         while(!party.empty()){
-            Pool pool = (Pool)party.get();
+            Pool pool = (Pool)party.front();
+            party.pop();
 
             pool.join();
         }
 
-        this.locked = false;
+        this.unlock();
     }
 
     public BufferedImage getImage(){

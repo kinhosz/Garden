@@ -6,20 +6,20 @@ import javax.swing.JFrame;
 import java.awt.AWTException;
 import java.awt.Robot;
 
-import struct.Buffer;
+import bits.Queue;
 import constants.MouseConst;
 import event.MouseEv;
 
 public class Motion extends MouseMotionAdapter implements MouseConst{
    
-    private Buffer buffer;
+    private Queue buffer;
     private JFrame frame;
     private boolean locked;
     private Robot robot;
     private int posX;
     private int posY;
 
-    public Motion(Buffer b, JFrame f) throws AWTException{
+    public Motion(Queue b, JFrame f) throws AWTException{
         super();
         this.buffer = b;
         this.frame = f;
@@ -30,7 +30,7 @@ public class Motion extends MouseMotionAdapter implements MouseConst{
     @Override
     public void mouseDragged(MouseEvent e){
         MouseEv ev = new MouseEv(Motion.MOUSE_DRAGGED, e);
-        this.buffer.put(ev);
+        this.buffer.push(ev);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Motion extends MouseMotionAdapter implements MouseConst{
 
         if(this.locked && e.getX() == this.posX && e.getY() == this.posY) return ;
 
-        this.buffer.put(ev);
+        this.buffer.push(ev);
 
         if(this.locked) this.restartCursorPosition();
     }

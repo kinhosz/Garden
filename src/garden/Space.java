@@ -2,14 +2,14 @@ import java.awt.AWTException;
 import javax.swing.JFrame;
 import handle.Keyboard;
 import handle.Mouse;
-import struct.Buffer;
+import bits.Queue;
 import handle.Motion;
 import camera.Camera;
 import event.Event;
 import event.KeyboardEv;
 import event.MouseEv;
 import event.TimerEv;
-import handle.Timer;
+import handle.TimerAsync;
 
 public class Space{
 
@@ -26,11 +26,11 @@ public class Space{
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
         Space space = new Space(240);
-        Buffer buffer = new Buffer();
+        Queue buffer = new Queue();
         Keyboard keyboard = new Keyboard(buffer);
         Mouse mouse = new Mouse(buffer);
         Motion motion = new Motion(buffer, frame);
-        Timer timer = new Timer(buffer, "display", 300);
+        TimerAsync timer = new TimerAsync(buffer, "display");
         
         Camera camera = space.getCamera();
 
@@ -49,14 +49,15 @@ public class Space{
         System.out.println(frame.getLocationOnScreen().getX());
         System.out.println(frame.getLocationOnScreen().getY());
 
-        timer.start();
+        timer.trigger();
 
         while(true){
 
             Event ev;
 
             if(buffer.size() == 0) continue;
-            ev = (Event)buffer.get();
+            ev = (Event)buffer.front();
+            buffer.pop();
 
             if(ev instanceof KeyboardEv){
 
@@ -91,9 +92,9 @@ public class Space{
                     frame.pack();
                     frame.setVisible(true);
                 }
+
+                timer.trigger();
             }
         }
-
-        timer.kill();
     }
 }
