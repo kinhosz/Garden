@@ -8,13 +8,13 @@
 ![Github open issues](https://img.shields.io/github/issues/kinhosz/Garden?style=for-the-badge)
 
 
-> Uma biblioteca para criações de jogos 3D.
+> Uma biblioteca com Ray Tracing para criações de jogos 3D.
 
 ### Features a serem desenvolvidas
 
 O projeto ainda está em desenvolvimento e as próximas tarefas a serem implementadas serão:
 
-- [ ] [Campo de visão](https://github.com/kinhosz/Garden/milestone/1)
+- [x] [Campo de visão](https://github.com/kinhosz/Garden/milestone/1)
 - [ ] [Espaço tridimensional](https://github.com/kinhosz/Garden/milestone/2)
 - [ ] [Formas e objetos](https://github.com/kinhosz/Garden/milestone/3)
 - [ ] [Iluminação](https://github.com/kinhosz/Garden/milestone/4)
