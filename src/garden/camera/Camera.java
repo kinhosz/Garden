@@ -23,6 +23,10 @@ public class Camera {
         this.direction = new Direction();
     }
 
+    public void kill(){
+        this.vision.kill();
+    }
+
     public void setResolution(int height) {
         /* examples:
         2160p: 3840 x 2160.

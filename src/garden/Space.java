@@ -23,6 +23,10 @@ public class Space{
         return this.camera;
     }
 
+    public void bye(){
+        this.camera.kill();
+    }
+
     public static void main(String[] args) throws AWTException{
         JFrame frame = new JFrame("Teste");
         Space space = new Space(240);
@@ -43,13 +47,17 @@ public class Space{
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(camera.takePicture());
+        System.out.println("hello");
         frame.pack();
+        System.out.println("hello");
         frame.setVisible(true);
 
         System.out.println(frame.getLocationOnScreen().getX());
         System.out.println(frame.getLocationOnScreen().getY());
 
         timer.trigger();
+
+        System.out.println("entrando no looping");
 
         while(true){
 
@@ -87,14 +95,18 @@ public class Space{
             else if(ev instanceof TimerEv){
 
                 if(camera.updated()){
-
+                    Event x = new Event();
                     frame.getContentPane().add(camera.takePicture());
                     frame.pack();
                     frame.setVisible(true);
+
+                    System.out.println("FPS = " + (1000/x.elapsed()));
                 }
 
                 timer.trigger();
             }
         }
+
+        space.bye();
     }
 }
