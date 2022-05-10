@@ -8,7 +8,6 @@ import java.awt.image.DataBufferInt;
 
 import geometry.Point;
 import geometry.Direction;
-import struct.Buffer;
 
 public class Vision {
 
@@ -18,6 +17,8 @@ public class Vision {
     private double verticalAngleRange = 60.0;
     private double horizontalAngleRange = 90.0;
     private boolean locked;
+    private Pool[] monitor;
+    private int threads;
 
     public Vision(int width, int height){
         this.width = width;
@@ -26,6 +27,34 @@ public class Vision {
         this.image.setAccelerationPriority(0); // idk
         this.createBaseImage();
         this.locked = false;
+
+        this.threads = 30;
+        this.createPool();
+    }
+
+    public void kill(){
+
+        for(int i=0;i<this.threads;i++){
+            monitor[i].kill();
+            try {
+                monitor[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void createPool(){
+
+        this.monitor = new Pool[this.threads];
+        int[] pixels = ((DataBufferInt)this.getImage().getRaster().getDataBuffer()).getData();
+
+        for(int i=0;i<this.threads;i++){
+            Pool pool = new Pool(pixels, this.height, this.width);
+            pool.start();
+
+            this.monitor[i] = pool;
+        }
     }
 
     private void createBaseImage(){
@@ -41,6 +70,16 @@ public class Vision {
     public synchronized boolean locked(){
 
         return this.locked;
+    }
+
+    public synchronized void lock(){
+
+        this.locked = true;
+    }
+
+    public synchronized void unlock(){
+
+        this.locked = false;
     }
 
     public int getWidth(){
@@ -71,60 +110,44 @@ public class Vision {
             throw new Exception("The buffered Image is locked");
         }
 
-        this.splitImage(4, p, d);
+        this.splitImage(p, d);
         
         JLabel label = this.createImage();
         
         return label;
     }
 
-    private void splitImage(int threads, Point p, Direction d) throws Exception{
+    private void splitImage(Point p, Direction d){
 
-        if(threads > 300){
-            throw new Exception("How many threads!");
-        }
-
-        this.locked = true;
-
-        int block = (int)Math.sqrt(threads);
+        this.lock();
 
         Point myPoint = new Point(p.getX(), p.getY(), p.getZ());
         Direction myDirection = new Direction(d.getAlpha(), d.getBeta());
 
-        int[] pixels = ((DataBufferInt) this.getImage().getRaster().getDataBuffer()).getData();
+        int dx = (int)(this.height + this.threads - 1)/this.threads;
+        int initial = 0;
 
-        int dx = (int)(this.height + block - 1)/block;
-        int dy = (int)(this.width + block - 1)/block;
+        for(int i=0;i<this.threads;i++){
 
-        Buffer party = new Buffer();
+            int end = Math.min(this.height-1, initial + dx -1);
 
-        for(int x=0;x<this.height;x+=dx){
+            monitor[i].setPosition(myPoint, myDirection);
+            monitor[i].setAngleRange(this.verticalAngleRange, this.horizontalAngleRange);
+            monitor[i].setShape(initial, end, 0, this.width-1);
 
-            int xf = Math.min(x + dx, this.height) - 1;
-            if(xf < x) continue;
+            monitor[i].turnOn();
 
-            for(int y=0;y<this.width;y+=dy){
+            initial = end + 1;
+        }
 
-                int yf = Math.min(y + dy, this.width) - 1;
+        for(int i=0;i<this.threads;i++){
 
-                if(yf < y) continue;
-
-                Pool pool = new Pool(pixels, myPoint, myDirection, this.height, this.width);
-                pool.setAngleRange(this.verticalAngleRange, this.horizontalAngleRange);
-                pool.setShape(x, xf, y, yf);
-                pool.start();
-
-                party.put(pool);
+            while(monitor[i].isOn()){
+                Pool.pause();
             }
         }
 
-        while(!party.empty()){
-            Pool pool = (Pool)party.get();
-
-            pool.join();
-        }
-
-        this.locked = false;
+        this.unlock();
     }
 
     public BufferedImage getImage(){
