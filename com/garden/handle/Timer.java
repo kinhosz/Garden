@@ -1,9 +1,9 @@
-package handle;
+package com.garden.handle;
 
 import java.lang.Thread;
 
-import bits.Queue;
-import event.TimerEv;
+import com.garden.bits.Queue;
+import com.garden.event.TimerEv;
 
 public class Timer extends Thread{
     
